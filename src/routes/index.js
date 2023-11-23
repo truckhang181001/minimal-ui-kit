@@ -13,8 +13,6 @@ import { PATH_AFTER_LOGIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
-// ----------------------------------------------------------------------
-
 const Loadable = (Component) => (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { pathname } = useLocation();
@@ -113,26 +111,26 @@ export default function Router() {
             { path: 'new', element: <BlogNewPost /> },
           ],
         },
-        {
-          path: 'mail',
-          children: [
-            { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> },
-          ],
-        },
-        {
-          path: 'chat',
-          children: [
-            { element: <Chat />, index: true },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> },
-          ],
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> },
+        // {
+        //   path: 'mail',
+        //   children: [
+        //     { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
+        //     { path: 'label/:customLabel', element: <Mail /> },
+        //     { path: 'label/:customLabel/:mailId', element: <Mail /> },
+        //     { path: ':systemLabel', element: <Mail /> },
+        //     { path: ':systemLabel/:mailId', element: <Mail /> },
+        //   ],
+        // },
+        // {
+        //   path: 'chat',
+        //   children: [
+        //     { element: <Chat />, index: true },
+        //     { path: 'new', element: <Chat /> },
+        //     { path: ':conversationKey', element: <Chat /> },
+        //   ],
+        // },
+        // { path: 'calendar', element: <Calendar /> },
+        // { path: 'kanban', element: <Kanban /> },
       ],
     },
 
@@ -154,7 +152,7 @@ export default function Router() {
       path: '/',
       element: <MainLayout />,
       children: [
-        { element: <HomePage />, index: true },
+        { element: <Navigate to="/auth/login" replace />, index: true },
         { path: 'about-us', element: <About /> },
         { path: 'contact-us', element: <Contact /> },
         { path: 'faqs', element: <Faqs /> },
@@ -205,13 +203,12 @@ const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 
 // APP
-const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
-const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+// const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
+// const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
+// const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
+// const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 
 // MAIN
-const HomePage = Loadable(lazy(() => import('../pages/Home')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));

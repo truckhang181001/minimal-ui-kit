@@ -16,8 +16,6 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
 
-// ----------------------------------------------------------------------
-
 export default function LoginForm() {
   const { login } = useAuth();
 
