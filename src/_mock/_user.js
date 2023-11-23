@@ -111,13 +111,13 @@ export const _userAddressBook = [...Array(4)].map((_, index) => ({
   zipCode: '85807',
 }));
 
-export const _userInvoices = [...Array(10)].map((_, index) => ({
+export const _userInvoices = [...Array(5)].map((_, index) => ({
   id: _mock.id(index),
   createdAt: _mock.time(index),
   price: _mock.number.price(index),
 }));
 
-export const _userList = [...Array(24)].map((_, index) => ({
+export const _userList = [...Array(20)].map((_, index) => ({
   id: _mock.id(index),
   avatarUrl: _mock.image.avatar(index),
   name: _mock.name.fullName(index),

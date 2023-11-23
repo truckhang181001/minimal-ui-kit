@@ -17,13 +17,9 @@ import { IconButtonAnimate, varFade } from '../animate';
 //
 import ToggleButton from './ToggleButton';
 import SettingMode from './SettingMode';
-import SettingLayout from './SettingLayout';
-import SettingStretch from './SettingStretch';
-import SettingDirection from './SettingDirection';
+// import SettingLayout from './SettingLayout';
 import SettingFullscreen from './SettingFullscreen';
 import SettingColorPresets from './SettingColorPresets';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
@@ -122,24 +118,14 @@ export default function Settings() {
                     <SettingMode />
                   </Stack>
 
-                  <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Direction</Typography>
-                    <SettingDirection />
-                  </Stack>
-
-                  <Stack spacing={1.5}>
+                  {/* <Stack spacing={1.5}>
                     <Typography variant="subtitle2">Layout</Typography>
                     <SettingLayout />
-                  </Stack>
+                  </Stack> */}
 
                   <Stack spacing={1.5}>
                     <Typography variant="subtitle2">Presets</Typography>
                     <SettingColorPresets />
-                  </Stack>
-
-                  <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Stretch</Typography>
-                    <SettingStretch />
                   </Stack>
 
                   <SettingFullscreen />

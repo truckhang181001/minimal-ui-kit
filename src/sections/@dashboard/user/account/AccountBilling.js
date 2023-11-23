@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 // @mui
-import { Box, Grid, Card, Button, Typography, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 //
-import AccountBillingAddressBook from './AccountBillingAddressBook';
+// import AccountBillingAddressBook from './AccountBillingAddressBook';
 import AccountBillingPaymentMethod from './AccountBillingPaymentMethod';
 import AccountBillingInvoiceHistory from './AccountBillingInvoiceHistory';
-
-// ----------------------------------------------------------------------
 
 AccountBilling.propTypes = {
   addressBook: PropTypes.array,
@@ -15,6 +13,7 @@ AccountBilling.propTypes = {
   invoices: PropTypes.array,
 };
 
+// eslint-disable-next-line no-unused-vars
 export default function AccountBilling({ cards, addressBook, invoices }) {
   const [open, setOpen] = useState(false);
 
@@ -22,28 +21,6 @@ export default function AccountBilling({ cards, addressBook, invoices }) {
     <Grid container spacing={5}>
       <Grid item xs={12} md={8}>
         <Stack spacing={3}>
-          <Card sx={{ p: 3 }}>
-            <Typography variant="overline" sx={{ mb: 3, display: 'block', color: 'text.secondary' }}>
-              Your Plan
-            </Typography>
-            <Typography variant="h4">Premium</Typography>
-            <Box
-              sx={{
-                mt: { xs: 2, sm: 0 },
-                position: { sm: 'absolute' },
-                top: { sm: 24 },
-                right: { sm: 24 },
-              }}
-            >
-              <Button size="small" color="inherit" variant="outlined" sx={{ mr: 1 }}>
-                Cancel plan
-              </Button>
-              <Button size="small" variant="outlined">
-                Upgrade plan
-              </Button>
-            </Box>
-          </Card>
-
           <AccountBillingPaymentMethod
             cards={cards}
             isOpen={open}
@@ -51,7 +28,7 @@ export default function AccountBilling({ cards, addressBook, invoices }) {
             onCancel={() => setOpen(false)}
           />
 
-          <AccountBillingAddressBook addressBook={addressBook} />
+          {/* <AccountBillingAddressBook addressBook={addressBook} /> */}
         </Stack>
       </Grid>
 

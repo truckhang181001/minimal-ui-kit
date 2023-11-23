@@ -10,8 +10,6 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 // sections
 import { BlogNewPostForm } from '../../sections/@dashboard/blog';
 
-// ----------------------------------------------------------------------
-
 export default function BlogNewPost() {
   const { themeStretch } = useSettings();
 
