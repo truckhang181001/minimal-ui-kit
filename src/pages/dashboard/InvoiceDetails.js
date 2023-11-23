@@ -26,14 +26,14 @@ export default function InvoiceDetails() {
     <Page title="Invoice: View">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice Details"
+          heading="Invoice Details 🌻"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
               name: 'Invoices',
               href: PATH_DASHBOARD.invoice.root,
             },
-            { name: invoice?.invoiceNumber || '' },
+            { name: id || '' },
           ]}
         />
 

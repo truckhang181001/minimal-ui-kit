@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -18,13 +18,9 @@ import {
 import { fDate } from '../../../../utils/formatTime';
 import { fCurrency } from '../../../../utils/formatNumber';
 // components
-import Label from '../../../../components/Label';
-import Image from '../../../../components/Image';
 import Scrollbar from '../../../../components/Scrollbar';
-//
 import InvoiceToolbar from './InvoiceToolbar';
-
-// ----------------------------------------------------------------------
+import Logo from '../../../../components/Logo';
 
 const RowResultStyle = styled(TableRow)(({ theme }) => ({
   '& td': {
@@ -33,59 +29,123 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
 InvoiceDetails.propTypes = {
   invoice: PropTypes.object.isRequired,
 };
 
 export default function InvoiceDetails({ invoice }) {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   if (!invoice) {
     return null;
   }
 
-  const {
-    items,
-    taxes,
-    status,
-    dueDate,
-    discount,
-    invoiceTo,
-    createDate,
-    totalPrice,
-    invoiceFrom,
-    invoiceNumber,
-    subTotalPrice,
-  } = invoice;
+  const { invoiceFrom } = invoice;
+
+  const detailInvoice = {
+    id: '74e058c4-27b0-42f1-a756-c14c5fe23e42',
+    orderID: '27174323-C6ADR263TA2TGX',
+    eater: {
+      name: 'Huynh Truc',
+      mobileNumber: '+8597961691',
+    },
+    address: {
+      address: '69 Lý Tự Trọng, P.Bến Thành, Q.1, Hồ Chí Minh',
+      keywords: 'Thư viện Khoa học Tổng hợp TP.HCM - Cổng Lý Tự Trọng',
+    },
+    storeId: 'd08c7e26-af3b-4c5c-8b98-f83d9c9a7a3c',
+    itemInfo: {
+      count: 1,
+      items: [
+        {
+          name: 'Trà Sữa Hạt Mixed Ulangon',
+          quantity: 1,
+          fare: {
+            currencySymbol: '₫',
+            priceDisplay: '59.000',
+            originalItemPriceDisplay: '49.000',
+            beforeAdjustedPriceDisplay: '49.000',
+          },
+          comment: '',
+          modifierGroups: [
+            {
+              modifierGroupID: 'VNMOG20230712183226014187',
+              modifierGroupName: 'Đá chung hay Đá riêng',
+              modifiers: [
+                {
+                  modifierID: 'VNMOD20230712183226036138',
+                  modifierName: 'Đá riêng (nếu khoảng cách 2km trở lên)',
+                  priceDisplay: '0',
+                  quantity: 1,
+                  revampedPriceDisplay: '0',
+                  editedStatus: 0,
+                },
+              ],
+            },
+          ],
+          discountInfo: [
+            {
+              discountName: 'MÓN ĐỈNH ƯU ĐÃI 10%',
+              discountFunding: '',
+              itemDiscountPriceDisplay: '4.900',
+              isNewPromotion: false,
+              discountType: 'percentage',
+            },
+          ],
+          itemID: 'VNITE20230712183225016219',
+          editedStatus: 0,
+          weight: null,
+          itemCode: 'ITEM-DG7O',
+          specialItemType: '',
+          soldByWeight: false,
+          outOfStockInstruction: null,
+          parentID: '',
+          parentName: '',
+          skuID: '',
+        },
+      ],
+      merchantItems: null,
+    },
+    fare: {
+      totalDisplay: '45.100',
+    },
+    times: {
+      createdAt: '2023-11-19T06:46:40Z',
+      deliveredAt: '2023-11-19T06:56:01Z',
+      completedAt: '2023-11-19T07:18:31Z',
+      expiredAt: '2023-11-19T06:51:40Z',
+      acceptedAt: '2023-11-19T06:46:49Z',
+      cancelledAt: null,
+      readyAt: '2023-11-19T06:49:39Z',
+      displayedAt: '2023-11-19T06:48:54Z',
+      driverArriveRestoAt: null,
+    },
+    orderLevelDiscounts: [
+      {
+        discountType: 'order',
+        discountName: 'BOSS9K',
+        discountAmountDisplay: '9.000',
+        discountAmountValueInMin: 9000,
+        isNewPromotion: false,
+      },
+    ],
+  };
+
+  const { orderID, eater, address, itemInfo, fare, times } = detailInvoice;
 
   return (
     <>
-      <InvoiceToolbar invoice={invoice} />
+      <InvoiceToolbar invoice={detailInvoice} />
 
       <Card sx={{ pt: 5, px: 5 }}>
         <Grid container>
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
-            <Image disabledEffect visibleByDefault alt="logo" src="/logo/logo_full.svg" sx={{ maxWidth: 120 }} />
+            <Logo />
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Box sx={{ textAlign: { sm: 'right' } }}>
-              <Label
-                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color={
-                  (status === 'paid' && 'success') ||
-                  (status === 'unpaid' && 'warning') ||
-                  (status === 'overdue' && 'error') ||
-                  'default'
-                }
-                sx={{ textTransform: 'uppercase', mb: 1 }}
-              >
-                {status}
-              </Label>
-
-              <Typography variant="h6">{invoiceNumber}</Typography>
+              <Typography variant="h6">{orderID}</Typography>
             </Box>
           </Grid>
 
@@ -102,28 +162,28 @@ export default function InvoiceDetails({ invoice }) {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Invoice to
             </Typography>
-            <Typography variant="body2">{invoiceTo.name}</Typography>
-            <Typography variant="body2">{invoiceTo.address}</Typography>
-            <Typography variant="body2">Phone: {invoiceTo.phone}</Typography>
+            <Typography variant="body2">{eater.name}</Typography>
+            <Typography variant="body2">{address.address}</Typography>
+            <Typography variant="body2">Phone: {eater.mobileNumber}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              date create
+              Date create
             </Typography>
-            <Typography variant="body2">{fDate(createDate)}</Typography>
+            <Typography variant="body2">{fDate(times.createdAt)}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               Due date
             </Typography>
-            <Typography variant="body2">{fDate(dueDate)}</Typography>
+            <Typography variant="body2">{fDate(times.completedAt)}</Typography>
           </Grid>
         </Grid>
 
         <Scrollbar>
-          <TableContainer sx={{ minWidth: 960 }}>
+          <TableContainer sx={{ minWidth: 900 }}>
             <Table>
               <TableHead
                 sx={{
@@ -134,14 +194,14 @@ export default function InvoiceDetails({ invoice }) {
                 <TableRow>
                   <TableCell width={40}>#</TableCell>
                   <TableCell align="left">Description</TableCell>
-                  <TableCell align="left">Qty</TableCell>
+                  <TableCell align="left">Quantity</TableCell>
                   <TableCell align="right">Unit price</TableCell>
                   <TableCell align="right">Total</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                {items.map((row, index) => (
+                {itemInfo.items.map((row, index) => (
                   <TableRow
                     key={index}
                     sx={{
@@ -151,15 +211,17 @@ export default function InvoiceDetails({ invoice }) {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell align="left">
                       <Box sx={{ maxWidth: 560 }}>
-                        <Typography variant="subtitle2">{row.title}</Typography>
+                        <Typography variant="subtitle2">{row.name}</Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                          {row.description}
+                          {row.discountInfo[0].discountName}
                         </Typography>
                       </Box>
                     </TableCell>
                     <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="right">{fCurrency(row.price)}</TableCell>
-                    <TableCell align="right">{fCurrency(row.price * row.quantity)}</TableCell>
+                    <TableCell align="right">{row.fare.originalItemPriceDisplay}</TableCell>
+                    <TableCell align="right">
+                      {parseInt(row.fare.originalItemPriceDisplay, 10) * row.quantity}
+                    </TableCell>
                   </TableRow>
                 ))}
 
@@ -171,7 +233,7 @@ export default function InvoiceDetails({ invoice }) {
                   </TableCell>
                   <TableCell align="right" width={120}>
                     <Box sx={{ mt: 2 }} />
-                    <Typography>{fCurrency(subTotalPrice)}</Typography>
+                    <Typography>{fCurrency(49000)}</Typography>
                   </TableCell>
                 </RowResultStyle>
 
@@ -181,17 +243,9 @@ export default function InvoiceDetails({ invoice }) {
                     <Typography>Discount</Typography>
                   </TableCell>
                   <TableCell align="right" width={120}>
-                    <Typography sx={{ color: 'error.main' }}>{discount && fCurrency(-discount)}</Typography>
-                  </TableCell>
-                </RowResultStyle>
-
-                <RowResultStyle>
-                  <TableCell colSpan={3} />
-                  <TableCell align="right">
-                    <Typography>Taxes</Typography>
-                  </TableCell>
-                  <TableCell align="right" width={120}>
-                    <Typography>{taxes && fCurrency(taxes)}</Typography>
+                    <Typography sx={{ color: 'error.main' }}>
+                      {fCurrency(-itemInfo.items[0].discountInfo[0].itemDiscountPriceDisplay)}
+                    </Typography>
                   </TableCell>
                 </RowResultStyle>
 
@@ -201,7 +255,7 @@ export default function InvoiceDetails({ invoice }) {
                     <Typography variant="h6">Total</Typography>
                   </TableCell>
                   <TableCell align="right" width={140}>
-                    <Typography variant="h6">{fCurrency(totalPrice)}</Typography>
+                    <Typography variant="h6">{fCurrency(fare.totalDisplay)}</Typography>
                   </TableCell>
                 </RowResultStyle>
               </TableBody>
@@ -209,20 +263,7 @@ export default function InvoiceDetails({ invoice }) {
           </TableContainer>
         </Scrollbar>
 
-        <Divider sx={{ mt: 5 }} />
-
-        <Grid container>
-          <Grid item xs={12} md={9} sx={{ py: 3 }}>
-            <Typography variant="subtitle2">NOTES</Typography>
-            <Typography variant="body2">
-              We appreciate your business. Should you need us to add VAT or extra notes let us know!
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={3} sx={{ py: 3, textAlign: 'right' }}>
-            <Typography variant="subtitle2">Have a Question?</Typography>
-            <Typography variant="body2">support@minimals.cc</Typography>
-          </Grid>
-        </Grid>
+        <Divider sx={{ mt: 4 }} />
       </Card>
     </>
   );

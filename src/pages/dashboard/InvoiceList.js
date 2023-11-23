@@ -1,17 +1,14 @@
 import sumBy from 'lodash/sumBy';
-import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
-  Tab,
-  Tabs,
   Card,
   Table,
   Stack,
   Switch,
-  Button,
   Tooltip,
   Divider,
   TableBody,
@@ -31,7 +28,6 @@ import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 import { _invoices } from '../../_mock';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -40,28 +36,17 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
 
-// ----------------------------------------------------------------------
-
-const SERVICE_OPTIONS = [
-  'all',
-  'full stack development',
-  'backend development',
-  'ui design',
-  'ui/ux design',
-  'front end development',
-];
+const SERVICE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Client', align: 'left' },
-  { id: 'createDate', label: 'Create', align: 'left' },
-  { id: 'dueDate', label: 'Due', align: 'left' },
-  { id: 'price', label: 'Amount', align: 'center', width: 140 },
-  { id: 'sent', label: 'Sent', align: 'center', width: 140 },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'eater', label: 'Customer', align: 'left' },
+  { id: 'createTime', label: 'Create Time', align: 'left' },
+  { id: 'address', label: 'Address', align: 'left' },
+  { id: 'toal', label: 'Total', align: 'center', width: 140 },
+  { id: 'orderId', label: 'OrderId', align: 'center', width: 140 },
+  // { id: 'status', label: 'Status', align: 'left' },
   { id: '' },
 ];
-
-// ----------------------------------------------------------------------
 
 export default function InvoiceList() {
   const theme = useTheme();
@@ -99,7 +84,9 @@ export default function InvoiceList() {
 
   const [filterEndDate, setFilterEndDate] = useState(null);
 
-  const { currentTab: filterStatus, onChangeTab: onFilterStatus } = useTabs('all');
+  const { currentTab: filterStatus } = useTabs('all');
+
+  const [invoice, setInvoice] = useState([]);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
@@ -127,7 +114,7 @@ export default function InvoiceList() {
   };
 
   const handleViewRow = (id) => {
-    navigate(PATH_DASHBOARD.invoice.view(id));
+    navigate(PATH_DASHBOARD.invoice.view('e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'));
   };
 
   const dataFiltered = applySortFilter({
@@ -159,34 +146,56 @@ export default function InvoiceList() {
 
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
-  const TABS = [
-    { value: 'all', label: 'All', color: 'info', count: tableData.length },
-    { value: 'paid', label: 'Paid', color: 'success', count: getLengthByStatus('paid') },
-    { value: 'unpaid', label: 'Unpaid', color: 'warning', count: getLengthByStatus('unpaid') },
-    { value: 'overdue', label: 'Overdue', color: 'error', count: getLengthByStatus('overdue') },
-    { value: 'draft', label: 'Draft', color: 'default', count: getLengthByStatus('draft') },
-  ];
+  const row = {
+    id: '74e058c4-27b0-42f1-a756-c14c5fe23e42',
+    orderID: '27174323-C6ADR263TA2TGX',
+    eater: {
+      name: 'Huynh Truc',
+      mobileNumber: '+8597961691',
+    },
+    address: {
+      address: '69 Lý Tự Trọng, P.Bến Thành, Q.1, Hồ Chí Minh',
+      keywords: 'Thư viện Khoa học Tổng hợp TP.HCM - Cổng Lý Tự Trọng',
+    },
+    storeId: 'd08c7e26-af3b-4c5c-8b98-f83d9c9a7a3c',
+    fare: {
+      totalDisplay: '45.100',
+    },
+    times: {
+      createdAt: '2023-11-19T06:46:40Z',
+      deliveredAt: '2023-11-19T06:56:01Z',
+      completedAt: '2023-11-20T07:18:31Z',
+      expiredAt: '2023-11-19T06:51:40Z',
+      acceptedAt: '2023-11-19T06:46:49Z',
+      cancelledAt: null,
+      readyAt: '2023-11-19T06:49:39Z',
+      displayedAt: '2023-11-19T06:48:54Z',
+      driverArriveRestoAt: null,
+    },
+  };
+
+  useEffect(() => {
+    let invoices = [];
+    // eslint-disable-next-line no-plusplus
+    for (let index = 1; index < 15; index++) {
+      const newRow = { ...row };
+      newRow.id = row.id + index;
+      newRow.orderID = row.orderID + index;
+      invoices = [...invoices, newRow];
+    }
+    setInvoice(invoices);
+  }, []);
 
   return (
     <Page title="Invoice: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice List"
+          heading="Invoice List 🌻"
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
             { name: 'List' },
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.invoice.new}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              New Invoice
-            </Button>
-          }
         />
 
         <Card sx={{ mb: 5 }}>
@@ -241,30 +250,6 @@ export default function InvoiceList() {
         </Card>
 
         <Card>
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={filterStatus}
-            onChange={onFilterStatus}
-            sx={{ px: 2, bgcolor: 'background.neutral' }}
-          >
-            {TABS.map((tab) => (
-              <Tab
-                disableRipple
-                key={tab.value}
-                value={tab.value}
-                label={
-                  <Stack spacing={1} direction="row" alignItems="center">
-                    <div>{tab.label}</div> <Label color={tab.color}> {tab.count} </Label>
-                  </Stack>
-                }
-              />
-            ))}
-          </Tabs>
-
-          <Divider />
-
           <InvoiceTableToolbar
             filterName={filterName}
             filterService={filterService}
@@ -329,7 +314,7 @@ export default function InvoiceList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
+                  rowCount={invoice.length}
                   numSelected={selected.length}
                   onSort={onSort}
                   onSelectAllRows={(checked) =>
@@ -341,7 +326,19 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {/* {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                    <InvoiceTableRow
+                      key={row.id}
+                      row={row}
+                      selected={selected.includes(row.id)}
+                      onSelectRow={() => onSelectRow(row.id)}
+                      onViewRow={() => handleViewRow(row.id)}
+                      onEditRow={() => handleEditRow(row.id)}
+                      onDeleteRow={() => handleDeleteRow(row.id)}
+                    />
+                  ))} */}
+
+                  {invoice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}

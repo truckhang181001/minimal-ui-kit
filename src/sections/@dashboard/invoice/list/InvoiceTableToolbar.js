@@ -36,7 +36,7 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         select
-        label="Service type"
+        label="Filter something"
         value={filterService}
         onChange={onFilterService}
         SelectProps={{
@@ -100,7 +100,7 @@ export default function InvoiceTableToolbar({
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search client or invoice number..."
+        placeholder="Search blabla..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

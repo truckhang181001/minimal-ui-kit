@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 // @mui
-import { Box, Stack, Button, Dialog, Tooltip, IconButton, DialogActions, CircularProgress } from '@mui/material';
+import { Box, Stack, Dialog, Tooltip, IconButton, DialogActions, CircularProgress } from '@mui/material';
 // hooks
 import useToggle from '../../../../hooks/useToggle';
 // routes
@@ -11,8 +11,6 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import Iconify from '../../../../components/Iconify';
 //
 import InvoicePDF from './InvoicePDF';
-
-// ----------------------------------------------------------------------
 
 InvoiceToolbar.propTypes = {
   invoice: PropTypes.object.isRequired,
@@ -51,7 +49,7 @@ export default function InvoiceToolbar({ invoice }) {
 
           <PDFDownloadLink
             document={<InvoicePDF invoice={invoice} />}
-            fileName={invoice.invoiceNumber}
+            fileName={invoice.orderID}
             style={{ textDecoration: 'none' }}
           >
             {({ loading }) => (
@@ -62,34 +60,16 @@ export default function InvoiceToolbar({ invoice }) {
               </Tooltip>
             )}
           </PDFDownloadLink>
-
-          <Tooltip title="Print">
-            <IconButton>
-              <Iconify icon={'eva:printer-fill'} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Send">
-            <IconButton>
-              <Iconify icon={'ic:round-send'} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Share">
-            <IconButton>
-              <Iconify icon={'eva:share-fill'} />
-            </IconButton>
-          </Tooltip>
         </Stack>
 
-        <Button
+        {/* <Button
           color="inherit"
           variant="outlined"
           startIcon={<Iconify icon={'eva:checkmark-fill'} />}
           sx={{ alignSelf: 'flex-end' }}
         >
           Mark as Paid
-        </Button>
+        </Button> */}
       </Stack>
 
       <Dialog fullScreen open={open}>

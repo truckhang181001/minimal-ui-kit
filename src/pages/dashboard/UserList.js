@@ -40,18 +40,7 @@ import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/l
 
 const STATUS_OPTIONS = ['all', 'active', 'banned'];
 
-const ROLE_OPTIONS = [
-  'all',
-  'ux designer',
-  'full stack designer',
-  'backend developer',
-  'project manager',
-  'leader',
-  'ui designer',
-  'ui/ux designer',
-  'front end developer',
-  'full stack developer',
-];
+const ROLE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
