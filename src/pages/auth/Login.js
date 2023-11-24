@@ -1,21 +1,13 @@
-import { capitalCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@mui/material';
-// routes
+import { Box, Card, Stack, Link, Container, Typography } from '@mui/material';
 import { PATH_AUTH } from '../../routes/paths';
-// hooks
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
-// components
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
-// sections
 import { LoginForm } from '../../sections/auth/login';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -61,7 +53,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method } = useAuth();
+  // const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
 
@@ -75,7 +67,7 @@ export default function Login() {
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Don’t have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
+              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register} ml={'2px'}>
                 Get started
               </Link>
             </Typography>
@@ -101,7 +93,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to HiK
+                  Sign in to HiK.
                 </Typography>
               </Box>
             </Stack>

@@ -218,9 +218,9 @@ export default function InvoiceDetails({ invoice }) {
                       </Box>
                     </TableCell>
                     <TableCell align="left">{row.quantity}</TableCell>
-                    <TableCell align="right">{row.fare.originalItemPriceDisplay}</TableCell>
+                    <TableCell align="right">{fCurrency(row.fare.originalItemPriceDisplay)}</TableCell>
                     <TableCell align="right">
-                      {parseInt(row.fare.originalItemPriceDisplay, 10) * row.quantity}
+                      {fCurrency(row.fare.originalItemPriceDisplay.replace('.', '') * row.quantity)}
                     </TableCell>
                   </TableRow>
                 ))}

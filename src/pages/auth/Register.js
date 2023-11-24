@@ -1,21 +1,13 @@
-import { capitalCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography, Tooltip } from '@mui/material';
-// hooks
-import useAuth from '../../hooks/useAuth';
+import { Box, Card, Link, Container, Typography } from '@mui/material';
+// import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
-// routes
 import { PATH_AUTH } from '../../routes/paths';
-// components
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
-// sections
 import { RegisterForm } from '../../sections/auth/register';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -61,7 +53,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
-  const { method } = useAuth();
+  // const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
 
@@ -75,7 +67,7 @@ export default function Register() {
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
               Already have an account?{' '}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
+              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login} ml="2px">
                 Login
               </Link>
             </Typography>
@@ -98,7 +90,7 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Get started absolutely free.
+                  Create new account.
                 </Typography>
               </Box>
             </Box>

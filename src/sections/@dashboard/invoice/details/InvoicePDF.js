@@ -98,7 +98,7 @@ export default function InvoicePDF({ invoice }) {
                 </View>
 
                 <View style={[styles.tableCell_3, styles.alignRight]}>
-                  <Text>{fCurrency(item.fare.originalItemPriceDisplay * item.quantity)}</Text>
+                  <Text>{fCurrency(item.fare.originalItemPriceDisplay.replace('.', '') * item.quantity)}</Text>
                 </View>
               </View>
             ))}
