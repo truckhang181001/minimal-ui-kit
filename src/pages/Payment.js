@@ -1,22 +1,14 @@
-// @mui
 import { styled } from '@mui/material/styles';
 import { Box, Grid, Container, Typography } from '@mui/material';
-// hooks
 import useResponsive from '../hooks/useResponsive';
-// components
 import Page from '../components/Page';
-// sections
 import { PaymentSummary, PaymentMethods, PaymentBillingAddress } from '../sections/payment';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
   minHeight: '100%',
   paddingTop: theme.spacing(15),
   paddingBottom: theme.spacing(10),
 }));
-
-// ----------------------------------------------------------------------
 
 export default function Payment() {
   const isDesktop = useResponsive('up', 'md');
@@ -29,9 +21,9 @@ export default function Payment() {
             <Typography variant="h3" align="center" paragraph>
               Let's finish powering you up!
             </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }}>
+            {/* <Typography align="center" sx={{ color: 'text.secondary' }}>
               Professional plan is right for you.
-            </Typography>
+            </Typography> */}
           </Box>
 
           <Grid container spacing={isDesktop ? 3 : 5}>

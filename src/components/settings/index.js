@@ -124,7 +124,7 @@ export default function Settings() {
                   </Stack> */}
 
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Presets</Typography>
+                    <Typography variant="subtitle2">Color</Typography>
                     <SettingColorPresets />
                   </Stack>
 

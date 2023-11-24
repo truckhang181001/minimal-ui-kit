@@ -8,8 +8,6 @@ import cssStyles from '../../utils/cssStyles';
 import Iconify from '../Iconify';
 import { IconButtonAnimate } from '../animate';
 
-// ----------------------------------------------------------------------
-
 const RootStyle = styled('span')(({ theme }) => ({
   ...cssStyles(theme).bgBlur({ opacity: 0.64 }),
   right: 0,
@@ -32,10 +30,8 @@ const DotStyle = styled('span')(({ theme }) => ({
   right: 10,
   borderRadius: '50%',
   position: 'absolute',
-  backgroundColor: theme.palette.error.main,
+  backgroundColor: theme.palette.primary.main,
 }));
-
-// ----------------------------------------------------------------------
 
 ToggleButton.propTypes = {
   notDefault: PropTypes.bool,

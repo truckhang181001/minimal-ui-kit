@@ -110,26 +110,6 @@ export default function Router() {
             { path: 'new', element: <BlogNewPost /> },
           ],
         },
-        // {
-        //   path: 'mail',
-        //   children: [
-        //     { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-        //     { path: 'label/:customLabel', element: <Mail /> },
-        //     { path: 'label/:customLabel/:mailId', element: <Mail /> },
-        //     { path: ':systemLabel', element: <Mail /> },
-        //     { path: ':systemLabel/:mailId', element: <Mail /> },
-        //   ],
-        // },
-        // {
-        //   path: 'chat',
-        //   children: [
-        //     { element: <Chat />, index: true },
-        //     { path: 'new', element: <Chat /> },
-        //     { path: ':conversationKey', element: <Chat /> },
-        //   ],
-        // },
-        // { path: 'calendar', element: <Calendar /> },
-        // { path: 'kanban', element: <Kanban /> },
       ],
     },
 
@@ -140,7 +120,6 @@ export default function Router() {
       children: [
         { path: 'maintenance', element: <Maintenance /> },
         { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
@@ -204,6 +183,5 @@ const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')))
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
-const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
