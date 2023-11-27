@@ -1,13 +1,13 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography } from '@mui/material';
-// import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 import { PATH_AUTH } from '../../routes/paths';
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 import { RegisterForm } from '../../sections/auth/register';
+import useLocales from '../../hooks/useLocales';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -50,10 +50,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Register() {
   // const { method } = useAuth();
+  const { translate } = useLocales();
 
   const smUp = useResponsive('up', 'sm');
 
@@ -66,9 +65,9 @@ export default function Register() {
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Already have an account?{' '}
+              {translate('haveAnAccount')}{' '}
               <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login} ml="2px">
-                Login
+                {translate('login')}
               </Link>
             </Typography>
           )}
@@ -90,30 +89,18 @@ export default function Register() {
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Create new account.
+                  {translate('createNewAccount')}
                 </Typography>
               </Box>
             </Box>
 
             <RegisterForm />
 
-            {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-              By registering, I agree to Minimal&nbsp;
-              <Link underline="always" color="text.primary" href="#">
-                Terms of Service
-              </Link>
-              and
-              <Link underline="always" color="text.primary" href="#">
-                Privacy Policy
-              </Link>
-              .
-            </Typography> */}
-
             {!smUp && (
               <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                Already have an account?{' '}
+                {translate('haveAnAccount')}{' '}
                 <Link variant="subtitle2" to={PATH_AUTH.login} component={RouterLink}>
-                  Login
+                  {translate('login')}
                 </Link>
               </Typography>
             )}

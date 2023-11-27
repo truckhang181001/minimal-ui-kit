@@ -12,7 +12,9 @@ ThemeLocalization.propTypes = {
 
 export default function ThemeLocalization({ children }) {
   const defaultTheme = useTheme();
-  const { currentLang } = useLocales();
+  const { currentLang, translate } = useLocales();
+
+  console.log(translate('test'));
 
   const theme = createTheme(defaultTheme, currentLang.systemValue);
 

@@ -8,6 +8,7 @@ import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 import { LoginForm } from '../../sections/auth/login';
+import useLocales from '../../hooks/useLocales';
 
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -54,6 +55,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
   // const { method } = useAuth();
+  const { translate } = useLocales();
 
   const smUp = useResponsive('up', 'sm');
 
@@ -66,9 +68,9 @@ export default function Login() {
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
+              {translate('dontHaveAccount')} {''}
               <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register} ml={'2px'}>
-                Get started
+                {translate('getStarted')}
               </Link>
             </Typography>
           )}
@@ -77,7 +79,7 @@ export default function Login() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              {translate('wellcome')}
             </Typography>
             <Image
               visibleByDefault
@@ -93,7 +95,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to HiK.
+                  {translate('signInto')}
                 </Typography>
               </Box>
             </Stack>
@@ -102,9 +104,9 @@ export default function Login() {
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
+                {translate('dontHaveAccount')}
                 <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                  Get started
+                  {translate('getStarted')}
                 </Link>
               </Typography>
             )}

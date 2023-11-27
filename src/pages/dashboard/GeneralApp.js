@@ -12,11 +12,13 @@ import {
   AppCurrentDownload,
   AppTopInstalledCountries,
 } from '../../sections/@dashboard/general/app';
+import useLocales from '../../hooks/useLocales';
 
 export default function GeneralApp() {
   // const { user } = useAuth();
   const theme = useTheme();
   const { themeStretch } = useSettings();
+  const { translate } = useLocales();
 
   return (
     <Page title="General: App">
@@ -32,7 +34,7 @@ export default function GeneralApp() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Active Users"
+              title={translate('activeUser')}
               percent={2.6}
               total={18765}
               chartColor={theme.palette.primary.main}
@@ -42,7 +44,7 @@ export default function GeneralApp() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Installed"
+              title={translate('totalInstall')}
               percent={0.2}
               total={4876}
               chartColor={theme.palette.chart.blue[0]}
@@ -52,7 +54,7 @@ export default function GeneralApp() {
 
           <Grid item xs={12} md={4}>
             <AppWidgetSummary
-              title="Total Downloads"
+              title={translate('totalDownloads')}
               percent={-0.1}
               total={678}
               chartColor={theme.palette.chart.red[0]}

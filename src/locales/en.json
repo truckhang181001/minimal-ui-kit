@@ -1,6 +1,38 @@
 {
-  "demo": {
-    "title": "English",
-    "introduction": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-  }
+  "general": "GENERAL",
+  "app": "App",
+  "e-commerce": "E-Commerce",
+  "analytics": "Analytics",
+  "banking": "Banking",
+  "booking": "Booking",
+
+  "management": "MANAGEMENT",
+  "user": "User",
+  "invoice": "Invoice",
+  "blog": "Blog",
+
+  "wellcome": "Hi, Welcome Back",
+  "signInto": "Sign in to HiK",
+  "dontHaveAccount": "Don’t have an account?",
+  "getStarted": "Get started",
+  "email": "Email address",
+  "password": "Password",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot password?",
+  "login": "Login",
+
+  "createNewAccount": "Create new account.",
+  "haveAnAccount": "Already have an account?",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "register": "Register",
+  "firstNameRequired": "First name required",
+  "lastNameRequired": "Last name required",
+  "emailRequired": "Email is required",
+  "passwordRequired": "Password is required",
+  "validEmail": "Email must be a valid email address",
+
+  "activeUser": "Total Active Users",
+  "totalInstall": "Total Installed",
+  "totalDownloads": "Total Downloads"
 }

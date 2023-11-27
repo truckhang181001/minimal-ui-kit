@@ -1,12 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-//
 import enLocales from './en.json';
-import deLocales from './de.json';
-import frLocales from './fr.json';
-
-// ----------------------------------------------------------------------
+import vnLocales from './vn.json';
 
 i18n
   .use(LanguageDetector)
@@ -14,8 +10,7 @@ i18n
   .init({
     resources: {
       en: { translations: enLocales },
-      de: { translations: deLocales },
-      fr: { translations: frLocales }
+      vn: { translations: vnLocales },
     },
     lng: localStorage.getItem('i18nextLng') || 'en',
     fallbackLng: 'en',
@@ -23,8 +18,8 @@ i18n
     ns: ['translations'],
     defaultNS: 'translations',
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   });
 
 export default i18n;

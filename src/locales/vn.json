@@ -1,0 +1,38 @@
+{
+  "general": "TỔNG QUAN",
+  "app": "Ứng dụng",
+  "e-commerce": "Thương mại điện tử",
+  "analytics": "Phân tích",
+  "banking": "Ngân hàng",
+  "booking": "Đặt chỗ",
+
+  "management": "QUẢN LÝ",
+  "user": "Người dùng",
+  "invoice": "Hóa đơn",
+  "blog": "Blog",
+
+  "wellcome": "Chào mừng bạn quay trở lại",
+  "signInto": "Đăng nhập vào HiK",
+  "dontHaveAccount": "Bạn chưa có tài khoản?",
+  "getStarted": "Bắt đầu ngay",
+  "email": "Địa chỉ email",
+  "password": "Mật khẩu",
+  "rememberMe": "Ghi nhớ đăng nhập",
+  "forgotPassword": "Quên mật khẩu?",
+  "login": "Đăng nhập",
+
+  "createNewAccount": "Tạo tài khoản.",
+  "haveAnAccount": "Bạn đã có tài khoản?",
+  "firstName": "Họ",
+  "lastName": "Tên",
+  "register": "Đăng ký",
+  "firstNameRequired": "Bắt buộc nhập họ",
+  "lastNameRequired": "Bắt buộc nhập tên",
+  "emailRequired": "Bắt buộc nhập email",
+  "passwordRequired": "Bắt buộc nhập mật khẩu",
+  "validEmail": "Địa chỉ email không hợp lệ",
+
+  "activeUser": "Số người dùng đang hoạt động",
+  "totalInstall": "Tổng số lượt cài đặt",
+  "totalDownloads": "Tổng số lượt tải xuống"
+}

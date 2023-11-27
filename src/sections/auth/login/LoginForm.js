@@ -15,9 +15,11 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import useLocales from '../../../hooks/useLocales';
 
 export default function LoginForm() {
   const { login } = useAuth();
+  const { translate } = useLocales();
 
   const isMountedRef = useIsMountedRef();
 
@@ -63,11 +65,11 @@ export default function LoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label={translate('email')} />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label={translate('password')}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -82,14 +84,14 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
+        <RHFCheckbox name="remember" label={translate('rememberMe')} />
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
-          Forgot password?
+          {translate('forgotPassword')}
         </Link>
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-        Login
+        {translate('login')}
       </LoadingButton>
     </FormProvider>
   );
