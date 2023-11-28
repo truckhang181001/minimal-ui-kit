@@ -13,24 +13,12 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import MyAvatar from '../../../components/MyAvatar';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
-
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Settings',
-    linkTo: PATH_DASHBOARD.user.account,
-  },
-];
-
-// ----------------------------------------------------------------------
+import useLocales from '../../../hooks/useLocales';
 
 export default function AccountPopover() {
   const navigate = useNavigate();
+
+  const { translate } = useLocales();
 
   const { user, logout } = useAuth();
 
@@ -61,6 +49,17 @@ export default function AccountPopover() {
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
     }
   };
+
+  const MENU_OPTIONS = [
+    {
+      label: translate('home'),
+      linkTo: '/',
+    },
+    {
+      label: translate('settings'),
+      linkTo: PATH_DASHBOARD.user.account,
+    },
+  ];
 
   return (
     <>
@@ -120,7 +119,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          {translate('logout')}
         </MenuItem>
       </MenuPopover>
     </>

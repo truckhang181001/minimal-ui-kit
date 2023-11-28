@@ -9,17 +9,17 @@ import { Box, Grid, Card, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../../hooks/useAuth';
+import useLocales from '../../../../hooks/useLocales';
 // utils
 import { fData } from '../../../../utils/formatNumber';
 // _mock
 import { countries } from '../../../../_mock';
 // components
-import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
-
-// ----------------------------------------------------------------------
+import { FormProvider, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
 
 export default function AccountGeneral() {
   const { enqueueSnackbar } = useSnackbar();
+  const { translate } = useLocales();
 
   const { user } = useAuth();
 
@@ -103,8 +103,6 @@ export default function AccountGeneral() {
                 </Typography>
               }
             />
-
-            <RHFSwitch name="isPublic" labelPlacement="start" label="Public Profile" sx={{ mt: 5 }} />
           </Card>
         </Grid>
 
@@ -118,13 +116,13 @@ export default function AccountGeneral() {
                 gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
               }}
             >
-              <RHFTextField name="displayName" label="Name" />
-              <RHFTextField name="email" label="Email Address" />
+              <RHFTextField name="displayName" label={translate('name')} />
+              <RHFTextField name="email" label={translate('email')} />
 
-              <RHFTextField name="phoneNumber" label="Phone Number" />
-              <RHFTextField name="address" label="Address" />
+              <RHFTextField name="phoneNumber" label={translate('phoneNumber')} />
+              <RHFTextField name="address" label={translate('address')} />
 
-              <RHFSelect name="country" label="Country" placeholder="Country">
+              <RHFSelect name="country" label={translate('country')} placeholder="Country">
                 <option value="" />
                 {countries.map((option) => (
                   <option key={option.code} value={option.label}>
@@ -133,17 +131,17 @@ export default function AccountGeneral() {
                 ))}
               </RHFSelect>
 
-              <RHFTextField name="state" label="State/Region" />
+              <RHFTextField name="state" label={translate('state')} />
 
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="zipCode" label="Zip/Code" />
+              <RHFTextField name="city" label={translate('city')} />
+              <RHFTextField name="zipCode" label={translate('zip')} />
             </Box>
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <RHFTextField name="about" multiline rows={4} label="About" />
+              <RHFTextField name="about" multiline rows={4} label={translate('about')} />
 
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Save Changes
+                {translate('saveChanges')}
               </LoadingButton>
             </Stack>
           </Card>

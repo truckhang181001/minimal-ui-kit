@@ -2,7 +2,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Card, Stack, Link, Container, Typography } from '@mui/material';
 import { PATH_AUTH } from '../../routes/paths';
-// import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 import Page from '../../components/Page';
 import Logo from '../../components/Logo';

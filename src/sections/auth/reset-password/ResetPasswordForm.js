@@ -10,6 +10,7 @@ import { LoadingButton } from '@mui/lab';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
+import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +21,7 @@ ResetPasswordForm.propTypes = {
 
 export default function ResetPasswordForm({ onSent, onGetEmail }) {
   const isMountedRef = useIsMountedRef();
+  const { translate } = useLocales();
 
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -50,10 +52,10 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label={translate('email')} />
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Reset Password
+          {translate('resetPassword')}
         </LoadingButton>
       </Stack>
     </FormProvider>

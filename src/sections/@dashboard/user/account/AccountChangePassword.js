@@ -8,16 +8,16 @@ import { Stack, Card } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import { FormProvider, RHFTextField } from '../../../../components/hook-form';
-
-// ----------------------------------------------------------------------
+import useLocales from '../../../../hooks/useLocales';
 
 export default function AccountChangePassword() {
   const { enqueueSnackbar } = useSnackbar();
+  const { translate } = useLocales();
 
   const ChangePassWordSchema = Yup.object().shape({
-    oldPassword: Yup.string().required('Old Password is required'),
-    newPassword: Yup.string().min(6, 'Password must be at least 6 characters').required('New Password is required'),
-    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
+    oldPassword: Yup.string().required(translate('oldPassword')),
+    newPassword: Yup.string().min(6, translate('passwordLeastCharacters')).required(translate('newPasswordRequired')),
+    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], translate('passwordMustMatch')),
   });
 
   const defaultValues = {
@@ -41,7 +41,7 @@ export default function AccountChangePassword() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar('Update success!');
+      enqueueSnackbar(translate('updateSuccess'));
     } catch (error) {
       console.error(error);
     }
@@ -51,14 +51,14 @@ export default function AccountChangePassword() {
     <Card sx={{ p: 3 }}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3} alignItems="flex-end">
-          <RHFTextField name="oldPassword" type="password" label="Old Password" />
+          <RHFTextField name="oldPassword" type="password" label={translate('oldPassword')} />
 
-          <RHFTextField name="newPassword" type="password" label="New Password" />
+          <RHFTextField name="newPassword" type="password" label={translate('newPassword')} />
 
-          <RHFTextField name="confirmNewPassword" type="password" label="Confirm New Password" />
+          <RHFTextField name="confirmNewPassword" type="password" label={translate('confirmNewPassword')} />
 
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            Save Changes
+            {translate('saveChanges')}
           </LoadingButton>
         </Stack>
       </FormProvider>

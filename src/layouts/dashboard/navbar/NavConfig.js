@@ -1,9 +1,5 @@
-// routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
-// components
 import SvgIconStyle from '../../../components/SvgIconStyle';
-
-// ----------------------------------------------------------------------
 
 const getIcon = (name) => <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
@@ -23,32 +19,28 @@ const ICONS = {
   dashboard: getIcon('ic_dashboard'),
 };
 
-const navConfig = [
+const navConfig = (translate) => [
   // GENERAL
-  // ----------------------------------------------------------------------
   {
-    subheader: 'general',
+    subheader: translate('generalUpcase'),
     items: [
-      { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
-      { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
-      { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
-      { title: 'banking', path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
-      { title: 'booking', path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
+      { title: translate('app'), path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+      { title: translate('e-commerce'), path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
+      { title: translate('analytics'), path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
+      { title: translate('banking'), path: PATH_DASHBOARD.general.banking, icon: ICONS.banking },
+      { title: translate('booking'), path: PATH_DASHBOARD.general.booking, icon: ICONS.booking },
     ],
   },
-
   // MANAGEMENT
-  // ----------------------------------------------------------------------
   {
-    subheader: 'management',
+    subheader: translate('managementUpcase'),
     items: [
       // USER
       {
-        title: 'user',
+        title: translate('user'),
         path: PATH_DASHBOARD.user.root,
         icon: ICONS.user,
         children: [
-          // { title: 'profile', path: PATH_DASHBOARD.user.profile },
           { title: 'cards', path: PATH_DASHBOARD.user.cards },
           { title: 'list', path: PATH_DASHBOARD.user.list },
           { title: 'create', path: PATH_DASHBOARD.user.new },
@@ -59,7 +51,7 @@ const navConfig = [
 
       // E-COMMERCE
       {
-        title: 'e-commerce',
+        title: translate('e-commerce'),
         path: PATH_DASHBOARD.eCommerce.root,
         icon: ICONS.cart,
         children: [
@@ -74,7 +66,7 @@ const navConfig = [
 
       // INVOICE
       {
-        title: 'invoice',
+        title: translate('invoice'),
         path: PATH_DASHBOARD.invoice.root,
         icon: ICONS.invoice,
         children: [
@@ -87,7 +79,7 @@ const navConfig = [
 
       // BLOG
       {
-        title: 'blog',
+        title: translate('blog'),
         path: PATH_DASHBOARD.blog.root,
         icon: ICONS.blog,
         children: [
@@ -98,27 +90,6 @@ const navConfig = [
       },
     ],
   },
-
-  // APP
-  // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'app',
-  //   items: [
-  //     {
-  //       title: 'mail',
-  //       path: PATH_DASHBOARD.mail.root,
-  //       icon: ICONS.mail,
-  //       info: (
-  //         <Label variant="outlined" color="error">
-  //           +32
-  //         </Label>
-  //       ),
-  //     },
-  //     { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-  //     { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
-  //     { title: 'kanban', path: PATH_DASHBOARD.kanban, icon: ICONS.kanban },
-  //   ],
-  // },
 ];
 
 export default navConfig;

@@ -13,6 +13,7 @@ import Page from '../../components/Page';
 import { ResetPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
+import useLocales from '../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +30,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  const { translate } = useLocales();
 
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>
@@ -40,17 +42,14 @@ export default function ResetPassword() {
             {!sent ? (
               <>
                 <Typography variant="h3" paragraph>
-                  Forgot your password?
+                  {translate('forgotYourPassowrd')}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-                  Please enter the email address associated with your account and We will email you a link to reset your
-                  password.
-                </Typography>
+                <Typography sx={{ color: 'text.secondary', mb: 5 }}>{translate('textForgotPassword')}</Typography>
 
                 <ResetPasswordForm onSent={() => setSent(true)} onGetEmail={(value) => setEmail(value)} />
 
                 <Button fullWidth size="large" component={RouterLink} to={PATH_AUTH.login} sx={{ mt: 1 }}>
-                  Back
+                  {translate('back')}
                 </Button>
               </>
             ) : (
@@ -58,17 +57,17 @@ export default function ResetPassword() {
                 <SentIcon sx={{ mb: 5, mx: 'auto', height: 160 }} />
 
                 <Typography variant="h3" gutterBottom>
-                  Request sent successfully
+                  {translate('requestSentSuccessfully')}
                 </Typography>
                 <Typography>
-                  We have sent a confirmation email to &nbsp;
+                  {translate('sentTo')} &nbsp;
                   <strong>{email}</strong>
                   <br />
-                  Please check your email.
+                  {translate('checkMail')}
                 </Typography>
 
                 <Button size="large" variant="contained" component={RouterLink} to={PATH_AUTH.login} sx={{ mt: 5 }}>
-                  Back
+                  {translate('back')}
                 </Button>
               </Box>
             )}

@@ -20,6 +20,7 @@ import navConfig from './NavConfig';
 import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
+import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ NavbarVertical.propTypes = {
 
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const theme = useTheme();
+  const { translate } = useLocales();
 
   const { pathname } = useLocation();
 
@@ -84,7 +86,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         <NavbarAccount isCollapse={isCollapse} />
       </Stack>
 
-      <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
+      <NavSectionVertical navConfig={navConfig(translate)} isCollapse={isCollapse} />
 
       <Box sx={{ flexGrow: 1 }} />
 

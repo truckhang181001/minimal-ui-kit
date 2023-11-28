@@ -4,11 +4,13 @@ import { alpha } from '@mui/material/styles';
 import { Button } from '@mui/material';
 // components
 import Iconify from '../Iconify';
+import useLocales from '../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
 export default function SettingFullscreen() {
   const [fullscreen, setFullscreen] = useState(false);
+  const { translate } = useLocales();
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -31,12 +33,11 @@ export default function SettingFullscreen() {
       sx={{
         fontSize: 14,
         ...(fullscreen && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+          bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
         }),
       }}
     >
-      {fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+      {fullscreen ? translate('exitFullscreen') : translate('fullscreen')}
     </Button>
   );
 }

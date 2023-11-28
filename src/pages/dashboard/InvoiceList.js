@@ -113,6 +113,7 @@ export default function InvoiceList() {
     navigate(PATH_DASHBOARD.invoice.edit(id));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleViewRow = (id) => {
     navigate(PATH_DASHBOARD.invoice.view('e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'));
   };

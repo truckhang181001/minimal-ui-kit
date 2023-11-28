@@ -6,6 +6,7 @@ import { alpha, styled } from '@mui/material/styles';
 import { Backdrop, Divider, Typography, Stack, FormControlLabel, Radio } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // utils
 import cssStyles from '../../utils/cssStyles';
 // config
@@ -17,7 +18,6 @@ import { IconButtonAnimate, varFade } from '../animate';
 //
 import ToggleButton from './ToggleButton';
 import SettingMode from './SettingMode';
-// import SettingLayout from './SettingLayout';
 import SettingFullscreen from './SettingFullscreen';
 import SettingColorPresets from './SettingColorPresets';
 
@@ -46,6 +46,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 export default function Settings() {
   const { themeMode, themeDirection, themeColorPresets, themeStretch, themeLayout, onResetSetting } = useSettings();
   const [open, setOpen] = useState(false);
+  const { translate } = useLocales();
 
   const notDefault =
     themeMode !== defaultSettings.themeMode ||
@@ -91,14 +92,16 @@ export default function Settings() {
         sx={{ background: 'transparent', zIndex: (theme) => theme.zIndex.drawer + 1 }}
       />
 
-      {!open && <ToggleButton open={open} notDefault={notDefault} onToggle={handleToggle} />}
+      {!open && (
+        <ToggleButton open={open} notDefault={notDefault} onToggle={handleToggle} hoverText={translate('settings')} />
+      )}
 
       <AnimatePresence>
         {open && (
           <>
             <RootStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
-                <Typography variant="subtitle1">Settings</Typography>
+                <Typography variant="subtitle1">{translate('settings')}</Typography>
                 <div>
                   <IconButtonAnimate onClick={onResetSetting}>
                     <Iconify icon={'ic:round-refresh'} width={20} height={20} />
@@ -114,17 +117,12 @@ export default function Settings() {
               <Scrollbar sx={{ flexGrow: 1 }}>
                 <Stack spacing={3} sx={{ p: 3 }}>
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Mode</Typography>
+                    <Typography variant="subtitle2">{translate('mode')}</Typography>
                     <SettingMode />
                   </Stack>
 
-                  {/* <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Layout</Typography>
-                    <SettingLayout />
-                  </Stack> */}
-
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Color</Typography>
+                    <Typography variant="subtitle2">{translate('color')}</Typography>
                     <SettingColorPresets />
                   </Stack>
 

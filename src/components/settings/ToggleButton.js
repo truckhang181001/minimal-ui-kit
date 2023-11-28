@@ -37,14 +37,15 @@ ToggleButton.propTypes = {
   notDefault: PropTypes.bool,
   onToggle: PropTypes.func,
   open: PropTypes.bool,
+  hoverText: PropTypes.string,
 };
 
-export default function ToggleButton({ notDefault, open, onToggle }) {
+export default function ToggleButton({ notDefault, open, onToggle, hoverText }) {
   return (
     <RootStyle>
       {notDefault && !open && <DotStyle />}
 
-      <Tooltip title="Settings" placement="left">
+      <Tooltip title={hoverText} placement="left">
         <IconButtonAnimate
           color="inherit"
           onClick={onToggle}
