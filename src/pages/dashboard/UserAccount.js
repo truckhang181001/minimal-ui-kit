@@ -1,5 +1,5 @@
-// import { capitalCase } from 'change-case';
 import { Container, Tab, Box, Tabs } from '@mui/material';
+import { useEffect } from 'react';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
@@ -12,8 +12,14 @@ import { AccountGeneral, AccountBilling, AccountChangePassword } from '../../sec
 
 export default function UserAccount() {
   const { themeStretch } = useSettings();
-  const { translate } = useLocales();
-  const { currentTab, onChangeTab } = useTabs('general');
+  const { translate, currentLang } = useLocales();
+  const { currentTab, onChangeTab, setCurrentTab } = useTabs(translate('general'));
+
+  useEffect(() => {
+    setCurrentTab(translate('general'));
+  }, [currentLang, setCurrentTab, translate]);
+
+  console.log('first', currentTab);
 
   const ACCOUNT_TABS = [
     {
@@ -60,8 +66,8 @@ export default function UserAccount() {
         <Box sx={{ mb: 5 }} />
 
         {ACCOUNT_TABS.map((tab) => {
-          // eslint-disable-next-line eqeqeq
-          const isMatched = tab.value == currentTab;
+          console.log(tab.value);
+          const isMatched = tab.value === currentTab;
           return isMatched && <Box key={tab.value}>{tab.component}</Box>;
         })}
       </Container>

@@ -35,25 +35,27 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 // sections
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
+import useLocales from '../../hooks/useLocales';
 
 const SERVICE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
-const TABLE_HEAD = [
-  { id: 'eater', label: 'Customer', align: 'left' },
-  { id: 'createTime', label: 'Create Time', align: 'left' },
-  { id: 'address', label: 'Address', align: 'left' },
-  { id: 'toal', label: 'Total', align: 'center', width: 140 },
-  { id: 'orderId', label: 'OrderId', align: 'center', width: 140 },
-  // { id: 'status', label: 'Status', align: 'left' },
-  { id: '' },
-];
-
 export default function InvoiceList() {
   const theme = useTheme();
+  const { translate } = useLocales();
 
   const { themeStretch } = useSettings();
 
   const navigate = useNavigate();
+
+  const TABLE_HEAD = [
+    { id: 'eater', label: translate('customer'), align: 'left' },
+    { id: 'createTime', label: translate('createTime'), align: 'left' },
+    { id: 'address', label: translate('address'), align: 'left' },
+    { id: 'toal', label: translate('total'), align: 'center', width: 140 },
+    { id: 'orderId', label: translate('orderId'), align: 'center', width: 140 },
+    // { id: 'status', label: 'Status', align: 'left' },
+    { id: '' },
+  ];
 
   const {
     dense,
@@ -193,9 +195,9 @@ export default function InvoiceList() {
         <HeaderBreadcrumbs
           heading="Invoice List 🌻"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Invoices', href: PATH_DASHBOARD.invoice.root },
-            { name: 'List' },
+            { name: translate('dashboard'), href: PATH_DASHBOARD.root },
+            { name: translate('invoice'), href: PATH_DASHBOARD.invoice.root },
+            { name: translate('list') },
           ]}
         />
 
@@ -327,18 +329,6 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {/* {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                    <InvoiceTableRow
-                      key={row.id}
-                      row={row}
-                      selected={selected.includes(row.id)}
-                      onSelectRow={() => onSelectRow(row.id)}
-                      onViewRow={() => handleViewRow(row.id)}
-                      onEditRow={() => handleEditRow(row.id)}
-                      onDeleteRow={() => handleDeleteRow(row.id)}
-                    />
-                  ))} */}
-
                   {invoice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     <InvoiceTableRow
                       key={row.id}

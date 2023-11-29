@@ -10,6 +10,7 @@
   "user": "User",
   "invoice": "Invoice",
   "blog": "Blog",
+  "dashboard": "Dashboard",
 
   "---------login page----------": "",
   "wellcome": "Hi, Welcome Back",
@@ -78,5 +79,53 @@
   "mode": "Mode",
   "color": "Color",
   "fullscreen": "Fullscreen",
-  "exitFullscreen": "Exit Fullscreen"
+  "exitFullscreen": "Exit Fullscreen",
+
+  "------404 page--------": "",
+  "pageNotFound": "Sorry, page not found!",
+  "textPageNotFound": "Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your spelling.",
+  "gotoHome": "Go To Home",
+
+  "-----500 page------": "",
+  "internalServerError": "500 Internal Server Error",
+  "internalServerErrorText": "There was an error, please try again later.",
+
+  "---------- maintenance page-------": "",
+  "titleMaintenance": "Website currently under maintenance",
+  "maintenanceText": "We are currently working hard on this page!",
+
+  "-------navbar: management-----": "",
+  "list": "List",
+  "details": "Details",
+  "create": "Create",
+  "edit": "Edit",
+  "cards": "Cards",
+  "shop": "Shop",
+  "product": "Product",
+  "checkout": "Checkout",
+
+  "------invoice list page-----": "",
+  "startDate": "Start date",
+  "endDate": "End date",
+  "customer": "Customer",
+  "createTime": "Create Time",
+  "total": "Total",
+  "orderId": "OrderId",
+
+  "------ button action ----": "",
+  "delete": "Delete",
+  "view": "View",
+  "download": "Download",
+
+  "-----invoice details": "",
+  "invoiceDetails": "Invoice Details",
+  "invoiceFrom": "INVOICE FROM",
+  "invoiceTo": "INVOICE TO",
+  "dateCreate": "DATE CREATE",
+  "dueDate": "DUE DATE",
+  "description": "Description",
+  "quantity": "Quantity",
+  "unitPrice": "Unit price",
+  "subtotal": "Subtoal",
+  "discount": "Discount"
 }

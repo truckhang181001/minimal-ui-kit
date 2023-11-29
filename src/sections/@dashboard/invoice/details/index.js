@@ -21,6 +21,7 @@ import { fCurrency } from '../../../../utils/formatNumber';
 import Scrollbar from '../../../../components/Scrollbar';
 import InvoiceToolbar from './InvoiceToolbar';
 import Logo from '../../../../components/Logo';
+import useLocales from '../../../../hooks/useLocales';
 
 const RowResultStyle = styled(TableRow)(({ theme }) => ({
   '& td': {
@@ -35,12 +36,13 @@ InvoiceDetails.propTypes = {
 
 export default function InvoiceDetails({ invoice }) {
   // const theme = useTheme();
+  const { translate } = useLocales();
 
   if (!invoice) {
     return null;
   }
 
-  const { invoiceFrom } = invoice;
+  // const { invoiceFrom } = invoice;
 
   const detailInvoice = {
     id: '74e058c4-27b0-42f1-a756-c14c5fe23e42',
@@ -151,16 +153,16 @@ export default function InvoiceDetails({ invoice }) {
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Invoice from
+              {translate('invoiceFrom')}
             </Typography>
-            <Typography variant="body2">{invoiceFrom.name}</Typography>
-            <Typography variant="body2">{invoiceFrom.address}</Typography>
-            <Typography variant="body2">Phone: {invoiceFrom.phone}</Typography>
+            <Typography variant="body2">{'Bui Minh Kha'}</Typography>
+            <Typography variant="body2">{'279, Nguyen Tri Phuong, Q10, TP.HCM'}</Typography>
+            <Typography variant="body2">Phone: {'0374996432'}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Invoice to
+              {translate('invoiceTo')}
             </Typography>
             <Typography variant="body2">{eater.name}</Typography>
             <Typography variant="body2">{address.address}</Typography>
@@ -169,14 +171,14 @@ export default function InvoiceDetails({ invoice }) {
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Date create
+              {translate('dateCreate')}
             </Typography>
             <Typography variant="body2">{fDate(times.createdAt)}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
-              Due date
+              {translate('dueDate')}
             </Typography>
             <Typography variant="body2">{fDate(times.completedAt)}</Typography>
           </Grid>
@@ -193,10 +195,10 @@ export default function InvoiceDetails({ invoice }) {
               >
                 <TableRow>
                   <TableCell width={40}>#</TableCell>
-                  <TableCell align="left">Description</TableCell>
-                  <TableCell align="left">Quantity</TableCell>
-                  <TableCell align="right">Unit price</TableCell>
-                  <TableCell align="right">Total</TableCell>
+                  <TableCell align="left">{translate('description')}</TableCell>
+                  <TableCell align="left">{translate('quantity')}</TableCell>
+                  <TableCell align="right">{translate('unitPrice')}</TableCell>
+                  <TableCell align="right">{translate('total')}</TableCell>
                 </TableRow>
               </TableHead>
 
@@ -229,7 +231,7 @@ export default function InvoiceDetails({ invoice }) {
                   <TableCell colSpan={3} />
                   <TableCell align="right">
                     <Box sx={{ mt: 2 }} />
-                    <Typography>Subtotal</Typography>
+                    <Typography>{translate('subtotal')}</Typography>
                   </TableCell>
                   <TableCell align="right" width={120}>
                     <Box sx={{ mt: 2 }} />
@@ -240,7 +242,7 @@ export default function InvoiceDetails({ invoice }) {
                 <RowResultStyle>
                   <TableCell colSpan={3} />
                   <TableCell align="right">
-                    <Typography>Discount</Typography>
+                    <Typography>{translate('discount')}</Typography>
                   </TableCell>
                   <TableCell align="right" width={120}>
                     <Typography sx={{ color: 'error.main' }}>
@@ -252,7 +254,7 @@ export default function InvoiceDetails({ invoice }) {
                 <RowResultStyle>
                   <TableCell colSpan={3} />
                   <TableCell align="right">
-                    <Typography variant="h6">Total</Typography>
+                    <Typography variant="h6">{translate('total')}</Typography>
                   </TableCell>
                   <TableCell align="right" width={140}>
                     <Typography variant="h6">{fCurrency(fare.totalDisplay)}</Typography>

@@ -10,6 +10,7 @@
   "user": "Người dùng",
   "invoice": "Hóa đơn",
   "blog": "Blog",
+  "dashboard": "Thống kê",
 
   "wellcome": "Chào mừng quay trở lại",
   "signInto": "Đăng nhập vào HiK",
@@ -75,5 +76,53 @@
   "mode": "Chủ đề",
   "color": "Màu sắc",
   "fullscreen": "Toàn màn hình",
-  "exitFullscreen": "Thoát toàn màn hình"
+  "exitFullscreen": "Thoát toàn màn hình",
+
+  "------404 page--------": "",
+  "pageNotFound": "Xin lỗi, không tìm thấy trang!",
+  "textPageNotFound": "Xin lỗi, chúng tôi không thể tìm thấy trang bạn đang tìm kiếm. Có lẽ bạn đã gõ nhầm URL? Hãy kiểm tra chính tả.",
+  "gotoHome": "Về trang chủ",
+
+  "-----500 page------": "",
+  "internalServerError": "500 Lỗi máy chủ nội bộ",
+  "internalServerErrorText": "Đã xảy ra lỗi, xin thử lại sau.",
+
+  "---------- maintenance page-------": "",
+  "titleMaintenance": "Trang web hiện đang được bảo trì",
+  "maintenanceText": "Chúng tôi hiện đang làm việc chăm chỉ trên trang này!",
+
+  "-------navbar: invoice-----": "",
+  "list": "Danh sách",
+  "details": "Chi tiết",
+  "create": "Tạo mới",
+  "edit": "Cập nhật",
+  "cards": "Thẻ",
+  "shop": "Cửa hàng",
+  "product": "Sản phẩm",
+  "checkout": "Thanh toán",
+
+  "------invoice list page-----": "",
+  "startDate": "Ngày bắt đầu",
+  "endDate": "Ngày kết thúc",
+  "customer": "Khách hàng",
+  "createTime": "Ngày tạo",
+  "total": "Tổng",
+  "orderId": "ID đơn hàng",
+
+  "------ button action ----": "",
+  "delete": "Xóa",
+  "view": "Xem",
+  "download": "Tải xuống",
+
+  "-----invoice details": "",
+  "invoiceDetails": "Chi tiết hóa đơn",
+  "invoiceFrom": "Đặt từ",
+  "invoiceTo": "Giao đến",
+  "dateCreate": "Ngày tạo",
+  "dueDate": "Ngày giao",
+  "description": "Mô tả",
+  "quantity": "Số lượng",
+  "unitPrice": "Đơn giá",
+  "subtotal": "Tạm tính",
+  "discount": "Giảm giá"
 }

@@ -3,8 +3,7 @@ import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
 import DatePicker from '@mui/lab/DatePicker';
 // components
 import Iconify from '../../../../components/Iconify';
-
-// ----------------------------------------------------------------------
+import useLocales from '../../../../hooks/useLocales';
 
 const INPUT_WIDTH = 160;
 
@@ -31,6 +30,7 @@ export default function InvoiceTableToolbar({
   onFilterStartDate,
   onFilterEndDate,
 }) {
+  const { translate } = useLocales();
   return (
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
       <TextField
@@ -67,7 +67,7 @@ export default function InvoiceTableToolbar({
       </TextField>
 
       <DatePicker
-        label="Start date"
+        label={translate('startDate')}
         value={filterStartDate}
         onChange={onFilterStartDate}
         renderInput={(params) => (
@@ -82,7 +82,7 @@ export default function InvoiceTableToolbar({
       />
 
       <DatePicker
-        label="End date"
+        label={translate('endDate')}
         value={filterEndDate}
         onChange={onFilterEndDate}
         renderInput={(params) => (

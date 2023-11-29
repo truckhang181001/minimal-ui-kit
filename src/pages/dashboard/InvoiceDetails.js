@@ -7,6 +7,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import { _invoices } from '../../_mock';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useLocales from '../../hooks/useLocales';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -17,6 +18,7 @@ import Invoice from '../../sections/@dashboard/invoice/details';
 
 export default function InvoiceDetails() {
   const { themeStretch } = useSettings();
+  const { translate } = useLocales();
 
   const { id } = useParams();
 
@@ -26,11 +28,11 @@ export default function InvoiceDetails() {
     <Page title="Invoice: View">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Invoice Details 🌻"
+          heading={translate('invoiceDetails')}
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: translate('dashboard'), href: PATH_DASHBOARD.root },
             {
-              name: 'Invoices',
+              name: translate('invoice'),
               href: PATH_DASHBOARD.invoice.root,
             },
             { name: id || '' },

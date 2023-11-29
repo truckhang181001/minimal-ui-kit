@@ -11,6 +11,7 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import Iconify from '../../../../components/Iconify';
 //
 import InvoicePDF from './InvoicePDF';
+import useLocales from '../../../../hooks/useLocales';
 
 InvoiceToolbar.propTypes = {
   invoice: PropTypes.object.isRequired,
@@ -18,7 +19,7 @@ InvoiceToolbar.propTypes = {
 
 export default function InvoiceToolbar({ invoice }) {
   const navigate = useNavigate();
-
+  const { translate } = useLocales();
   const { toggle: open, onOpen, onClose } = useToggle();
 
   const handleEdit = () => {
@@ -35,13 +36,13 @@ export default function InvoiceToolbar({ invoice }) {
         sx={{ mb: 5 }}
       >
         <Stack direction="row" spacing={1}>
-          <Tooltip title="Edit">
+          <Tooltip title={translate('edit')}>
             <IconButton onClick={handleEdit}>
               <Iconify icon={'eva:edit-fill'} />
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="View">
+          <Tooltip title={translate('view')}>
             <IconButton onClick={onOpen}>
               <Iconify icon={'eva:eye-fill'} />
             </IconButton>
@@ -53,7 +54,7 @@ export default function InvoiceToolbar({ invoice }) {
             style={{ textDecoration: 'none' }}
           >
             {({ loading }) => (
-              <Tooltip title="Download">
+              <Tooltip title={translate('download')}>
                 <IconButton>
                   {loading ? <CircularProgress size={24} color="inherit" /> : <Iconify icon={'eva:download-fill'} />}
                 </IconButton>

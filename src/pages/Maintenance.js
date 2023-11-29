@@ -6,6 +6,7 @@ import { Button, Typography, Container } from '@mui/material';
 import Page from '../components/Page';
 //
 import { MaintenanceIllustration } from '../assets';
+import useLocales from '../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -20,19 +21,20 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Maintenance() {
+  const { translate } = useLocales();
   return (
     <Page title="Maintenance" sx={{ height: 1 }}>
       <RootStyle>
         <Container sx={{ textAlign: 'center' }}>
           <Typography variant="h3" paragraph>
-            Website currently under maintenance
+            {translate('titleMaintenance')}
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>We are currently working hard on this page!</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{translate('maintenanceText')}</Typography>
 
           <MaintenanceIllustration sx={{ my: 10, height: 240 }} />
 
           <Button variant="contained" size="large" component={RouterLink} to="/">
-            Go to Home
+            {translate('gotoHome')}
           </Button>
         </Container>
       </RootStyle>
