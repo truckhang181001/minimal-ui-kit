@@ -36,6 +36,7 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
 import useLocales from '../../hooks/useLocales';
+// import axiosLocal from '../../utils/axiosLocal';
 
 const SERVICE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
@@ -187,7 +188,18 @@ export default function InvoiceList() {
       invoices = [...invoices, newRow];
     }
     setInvoice(invoices);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // const getInvoiceList = async () => {
+  //   const response = await axios1.get('/api/v1/orders', {});
+  //   // console.log(response);
+  //   setInvoice(response.content);
+  // };
+
+  // useEffect(() => {
+  //   getInvoiceList();
+  // }, []);
 
   return (
     <Page title="Invoice: List">
