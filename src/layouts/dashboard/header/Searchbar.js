@@ -1,12 +1,25 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Input, Slide, Button, InputAdornment, ClickAwayListener } from '@mui/material';
+import {
+  Input,
+  Slide,
+  Button,
+  InputAdornment,
+  ClickAwayListener,
+  TextField,
+  MenuItem,
+  Stack,
+  Box,
+} from '@mui/material';
 // utils
+import DatePicker from '@mui/lab/DatePicker';
 import cssStyles from '../../../utils/cssStyles';
 // components
 import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
+import useLocales from '../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
@@ -32,9 +45,32 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
+const INPUT_WIDTH = 200;
+const optionsPlatform = ['all', 'Grab Food', 'Now', 'GoFood', 'Loship'];
+const optionsStore = ['all', 'Nguyen Tri Phuong', 'Nguyen Dinh Chieu', 'Tran Quang Khai'];
+// ----------------------------------------------------------------------
 
 export default function Searchbar() {
   const [isOpen, setOpen] = useState(false);
+  const { translate } = useLocales();
+  const [platform, setPlatform] = useState('all');
+  const [store, setStore] = useState('all');
+  const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0)));
+  const [endDate, setEndDate] = useState(new Date(new Date().setHours(23, 59)));
+
+  const handleChangeStartDate = (time) => {
+    setStartDate(new Date(new Date(time).setHours(0, 0)));
+    if (time > endDate) {
+      setEndDate(new Date(new Date(time).setHours(23, 59)));
+    }
+  };
+
+  const handleChangeEndDate = (time) => {
+    setEndDate(new Date(new Date(time).setHours(23, 59)));
+    if (time < startDate) {
+      setStartDate(new Date(new Date(time).setHours(0, 0)));
+    }
+  };
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -44,15 +80,17 @@ export default function Searchbar() {
     setOpen(false);
   };
 
+  const onFilterFlatform = (event) => {
+    setPlatform(event.target.value);
+  };
+
+  const onFilterStore = (event) => {
+    setStore(event.target.value);
+  };
+
   return (
     <ClickAwayListener onClickAway={handleClose}>
-      <div>
-        {!isOpen && (
-          <IconButtonAnimate onClick={handleOpen}>
-            <Iconify icon={'eva:search-fill'} width={20} height={20} />
-          </IconButtonAnimate>
-        )}
-
+      <Box width="90%">
         <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
           <SearchbarStyle>
             <Input
@@ -62,10 +100,7 @@ export default function Searchbar() {
               placeholder="Search…"
               startAdornment={
                 <InputAdornment position="start">
-                  <Iconify
-                    icon={'eva:search-fill'}
-                    sx={{ color: 'text.disabled', width: 20, height: 20 }}
-                  />
+                  <Iconify icon={'eva:search-fill'} sx={{ color: 'text.disabled', width: 20, height: 20 }} />
                 </InputAdornment>
               }
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
@@ -75,7 +110,113 @@ export default function Searchbar() {
             </Button>
           </SearchbarStyle>
         </Slide>
-      </div>
+
+        <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
+          <TextField
+            fullWidth
+            select
+            label="Flatform"
+            value={platform}
+            onChange={onFilterFlatform}
+            SelectProps={{
+              MenuProps: {
+                sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+              },
+            }}
+            sx={{
+              maxWidth: { md: INPUT_WIDTH },
+              textTransform: 'capitalize',
+            }}
+          >
+            {optionsPlatform.map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                sx={{
+                  mx: 1,
+                  my: 0.5,
+                  borderRadius: 0.75,
+                  typography: 'body2',
+                  textTransform: 'capitalize',
+                }}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            select
+            label="Store"
+            value={store}
+            onChange={onFilterStore}
+            SelectProps={{
+              MenuProps: {
+                sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+              },
+            }}
+            sx={{
+              maxWidth: { md: INPUT_WIDTH },
+              textTransform: 'capitalize',
+            }}
+          >
+            {optionsStore.map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                sx={{
+                  mx: 1,
+                  my: 0.5,
+                  borderRadius: 0.75,
+                  typography: 'body2',
+                  textTransform: 'capitalize',
+                }}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <DatePicker
+            maxDate={new Date()}
+            label={translate('startDate')}
+            value={startDate}
+            onChange={handleChangeStartDate}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                sx={{
+                  maxWidth: { md: INPUT_WIDTH },
+                }}
+              />
+            )}
+          />
+
+          <DatePicker
+            maxDate={new Date()}
+            label={translate('endDate')}
+            value={endDate}
+            onChange={handleChangeEndDate}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                sx={{
+                  maxWidth: { md: INPUT_WIDTH },
+                }}
+              />
+            )}
+          />
+
+          {!isOpen && (
+            <IconButtonAnimate onClick={handleOpen}>
+              <Iconify icon={'eva:search-fill'} width={20} height={20} />
+            </IconButtonAnimate>
+          )}
+        </Stack>
+      </Box>
     </ClickAwayListener>
   );
 }

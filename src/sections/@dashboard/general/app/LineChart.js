@@ -1,48 +1,35 @@
 import merge from 'lodash/merge';
 import { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-// @mui
 import { Card, CardHeader, Box, TextField } from '@mui/material';
-// components
+import PropTypes from 'prop-types';
 import { BaseOptionChart } from '../../../../components/chart';
 
-// ----------------------------------------------------------------------
+LineChart.propTypes = {
+  chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  horizontalArray: PropTypes.arrayOf(PropTypes.string).isRequired,
+  title: PropTypes.string.isRequired,
+  subheader: PropTypes.string.isRequired,
+};
 
-const CHART_DATA = [
-  {
-    year: 2019,
-    data: [
-      { name: 'Asia', data: [10, 41, 35, 51, 49, 62, 69, 91, 148] },
-      { name: 'America', data: [10, 34, 13, 56, 77, 88, 99, 77, 45] },
-    ],
-  },
-  {
-    year: 2020,
-    data: [
-      { name: 'Asia', data: [148, 91, 69, 62, 49, 51, 35, 41, 10] },
-      { name: 'America', data: [45, 77, 99, 88, 77, 56, 13, 34, 10] },
-    ],
-  },
-];
-
-export default function AppAreaInstalled() {
-  const [seriesData, setSeriesData] = useState(2019);
+export default function LineChart({ chartData, horizontalArray, title, subheader }) {
+  const [seriesData, setSeriesData] = useState(chartData[0].time);
 
   const handleChangeSeriesData = (event) => {
-    setSeriesData(Number(event.target.value));
+    setSeriesData(event.target.value);
   };
 
   const chartOptions = merge(BaseOptionChart(), {
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: [...horizontalArray],
     },
   });
 
   return (
     <Card>
       <CardHeader
-        title="Area Installed"
-        subheader="(+43%) than last year"
+        title={title}
+        subheader={subheader}
         action={
           <TextField
             select
@@ -70,18 +57,18 @@ export default function AppAreaInstalled() {
               },
             }}
           >
-            {CHART_DATA.map((option) => (
-              <option key={option.year} value={option.year}>
-                {option.year}
+            {chartData.map((option) => (
+              <option key={option.time} value={option.time}>
+                {option.time}
               </option>
             ))}
           </TextField>
         }
       />
 
-      {CHART_DATA.map((item) => (
-        <Box key={item.year} sx={{ mt: 3, mx: 3 }} dir="ltr">
-          {item.year === seriesData && (
+      {chartData.map((item) => (
+        <Box key={item.time} sx={{ mt: 3, mx: 3 }} dir="ltr">
+          {item.time === seriesData && (
             <ReactApexChart type="line" series={item.data} options={chartOptions} height={364} />
           )}
         </Box>

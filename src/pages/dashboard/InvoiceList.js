@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import sumBy from 'lodash/sumBy';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -36,13 +37,19 @@ import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } fr
 import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
 import useLocales from '../../hooks/useLocales';
-// import axiosLocal from '../../utils/axiosLocal';
+import { getListInvoice } from '../../redux/slices/invoice';
+import { dispatch, useSelector } from '../../redux/store';
 
 const SERVICE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
 export default function InvoiceList() {
   const theme = useTheme();
   const { translate } = useLocales();
+
+  const loading = useSelector((state) => state.invoice.isLoading);
+  const data = useSelector((state) => state.invoice.data);
+  // console.log('loading', loading);
+  // console.log('data', data);
 
   const { themeStretch } = useSettings();
 
@@ -191,14 +198,8 @@ export default function InvoiceList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const getInvoiceList = async () => {
-  //   const response = await axios1.get('/api/v1/orders', {});
-  //   // console.log(response);
-  //   setInvoice(response.content);
-  // };
-
   // useEffect(() => {
-  //   getInvoiceList();
+  //   dispatch(getListInvoice());
   // }, []);
 
   return (
