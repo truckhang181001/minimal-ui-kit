@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -15,6 +14,13 @@ import {
 } from '@mui/material';
 // utils
 import DatePicker from '@mui/lab/DatePicker';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setEndDateAction,
+  setFlatFormAction,
+  setStartDateAction,
+  setStoreAction,
+} from '../../../redux/slices/searchbar';
 import cssStyles from '../../../utils/cssStyles';
 // components
 import Iconify from '../../../components/Iconify';
@@ -53,22 +59,24 @@ const optionsStore = ['all', 'Nguyen Tri Phuong', 'Nguyen Dinh Chieu', 'Tran Qua
 export default function Searchbar() {
   const [isOpen, setOpen] = useState(false);
   const { translate } = useLocales();
-  const [platform, setPlatform] = useState('all');
-  const [store, setStore] = useState('all');
-  const [startDate, setStartDate] = useState(new Date(new Date().setHours(0, 0)));
-  const [endDate, setEndDate] = useState(new Date(new Date().setHours(23, 59)));
+  const dispatch = useDispatch();
+
+  const platform = useSelector((state) => state.searchbar.flatForm);
+  const store = useSelector((state) => state.searchbar.store);
+  const startDate = useSelector((state) => state.searchbar.startDate);
+  const endDate = useSelector((state) => state.searchbar.endDate);
 
   const handleChangeStartDate = (time) => {
-    setStartDate(new Date(new Date(time).setHours(0, 0)));
+    dispatch(setStartDateAction(new Date(new Date(time).setHours(0, 0))));
     if (time > endDate) {
-      setEndDate(new Date(new Date(time).setHours(23, 59)));
+      dispatch(setEndDateAction(new Date(new Date(time).setHours(23, 59))));
     }
   };
 
   const handleChangeEndDate = (time) => {
-    setEndDate(new Date(new Date(time).setHours(23, 59)));
+    dispatch(setEndDateAction(new Date(new Date(time).setHours(23, 59))));
     if (time < startDate) {
-      setStartDate(new Date(new Date(time).setHours(0, 0)));
+      dispatch(setStartDateAction(new Date(new Date(time).setHours(0, 0))));
     }
   };
 
@@ -80,12 +88,12 @@ export default function Searchbar() {
     setOpen(false);
   };
 
-  const onFilterFlatform = (event) => {
-    setPlatform(event.target.value);
+  const onChangeFlatForm = (event) => {
+    dispatch(setFlatFormAction(event.target.value));
   };
 
-  const onFilterStore = (event) => {
-    setStore(event.target.value);
+  const onChangeStore = (event) => {
+    dispatch(setStoreAction(event.target.value));
   };
 
   return (
@@ -117,7 +125,7 @@ export default function Searchbar() {
             select
             label="Flatform"
             value={platform}
-            onChange={onFilterFlatform}
+            onChange={onChangeFlatForm}
             SelectProps={{
               MenuProps: {
                 sx: { '& .MuiPaper-root': { maxHeight: 260 } },
@@ -150,7 +158,7 @@ export default function Searchbar() {
             select
             label="Store"
             value={store}
-            onChange={onFilterStore}
+            onChange={onChangeStore}
             SelectProps={{
               MenuProps: {
                 sx: { '& .MuiPaper-root': { maxHeight: 260 } },
