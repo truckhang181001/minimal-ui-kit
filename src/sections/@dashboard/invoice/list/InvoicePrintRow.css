@@ -1,0 +1,16 @@
+.grabfood-label {
+    position: relative;
+    border: 1px solid black;
+    height: 40mm;
+    width: 58mm;
+    background-color: white !important;
+    font-size: 10px;
+    padding: 9px 9px;
+}
+.grabfood-label-header {
+    font-size: 13px;
+}
+.grabfood-label-price-time {
+    position: absolute;
+    bottom: 9px;
+}

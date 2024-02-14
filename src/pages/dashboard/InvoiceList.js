@@ -48,11 +48,11 @@ export default function InvoiceList() {
   const navigate = useNavigate();
 
   const TABLE_HEAD = [
+    { id: 'orderId', label: translate('orderId'), align: 'center', width: 140 },
     { id: 'eater', label: translate('customer'), align: 'left' },
     { id: 'createTime', label: translate('createTime'), align: 'left' },
     { id: 'address', label: translate('address'), align: 'left' },
     { id: 'toal', label: translate('total'), align: 'center', width: 140 },
-    { id: 'orderId', label: translate('orderId'), align: 'center', width: 140 },
     // { id: 'status', label: 'Status', align: 'left' },
     { id: '' },
   ];
@@ -76,7 +76,7 @@ export default function InvoiceList() {
     onChangeRowsPerPage,
   } = useTable({ defaultOrderBy: 'createDate' });
 
-  const [tableData, setTableData] = useState(_invoices);
+  const [tableData, setTableData] = useState([]);
 
   const [filterName, setFilterName] = useState('');
 
@@ -117,7 +117,7 @@ export default function InvoiceList() {
 
   // eslint-disable-next-line no-unused-vars
   const handleViewRow = (id) => {
-    navigate(PATH_DASHBOARD.invoice.view('e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'));
+    navigate(PATH_DASHBOARD.invoice.view(id));
   };
 
   const dataFiltered = applySortFilter({
@@ -149,44 +149,17 @@ export default function InvoiceList() {
 
   const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
-  const row = {
-    id: '74e058c4-27b0-42f1-a756-c14c5fe23e42',
-    orderID: '27174323-C6ADR263TA2TGX',
-    eater: {
-      name: 'Huynh Truc',
-      mobileNumber: '+8597961691',
-    },
-    address: {
-      address: '69 Lý Tự Trọng, P.Bến Thành, Q.1, Hồ Chí Minh',
-      keywords: 'Thư viện Khoa học Tổng hợp TP.HCM - Cổng Lý Tự Trọng',
-    },
-    storeId: 'd08c7e26-af3b-4c5c-8b98-f83d9c9a7a3c',
-    fare: {
-      totalDisplay: '45.100',
-    },
-    times: {
-      createdAt: '2023-11-19T06:46:40Z',
-      deliveredAt: '2023-11-19T06:56:01Z',
-      completedAt: '2023-11-20T07:18:31Z',
-      expiredAt: '2023-11-19T06:51:40Z',
-      acceptedAt: '2023-11-19T06:46:49Z',
-      cancelledAt: null,
-      readyAt: '2023-11-19T06:49:39Z',
-      displayedAt: '2023-11-19T06:48:54Z',
-      driverArriveRestoAt: null,
-    },
-  };
-
   useEffect(() => {
-    let invoices = [];
-    // eslint-disable-next-line no-plusplus
-    for (let index = 1; index < 15; index++) {
-      const newRow = { ...row };
-      newRow.id = row.id + index;
-      newRow.orderID = row.orderID + index;
-      invoices = [...invoices, newRow];
-    }
-    setInvoice(invoices);
+    
+    const url = 'http://localhost:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setInvoice(data.content);
+      setTableData(data.content);
+    })
   }, []);
 
   return (
@@ -201,7 +174,7 @@ export default function InvoiceList() {
           ]}
         />
 
-        <Card sx={{ mb: 5 }}>
+        {/* <Card sx={{ mb: 5 }}>
           <Scrollbar>
             <Stack
               direction="row"
@@ -250,7 +223,7 @@ export default function InvoiceList() {
               />
             </Stack>
           </Scrollbar>
-        </Card>
+        </Card> */}
 
         <Card>
           <InvoiceTableToolbar

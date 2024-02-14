@@ -1,5 +1,5 @@
 import { paramCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
 import {
@@ -44,10 +44,9 @@ const ROLE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
-  { id: 'company', label: 'Company', align: 'left' },
-  { id: 'role', label: 'Role', align: 'left' },
-  { id: 'isVerified', label: 'Verified', align: 'center' },
-  { id: 'status', label: 'Status', align: 'left' },
+  { id: 'mobileNumber', label: 'Mobile Number', align: 'left' },
+  { id: 'totalPayment', label: 'Total Payment', align: 'left' },
+  { id: 'lastOrderd', label: 'Last Ordered At', align: 'center' },
   { id: '' },
 ];
 
@@ -124,6 +123,14 @@ export default function UserList() {
     (!dataFiltered.length && !!filterName) ||
     (!dataFiltered.length && !!filterRole) ||
     (!dataFiltered.length && !!filterStatus);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/v1/eaters')
+      .then(res => res.json())
+      .then(data => {
+        setTableData(data.content)
+      })
+  }, [])
 
   return (
     <Page title="User: List">

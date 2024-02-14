@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  ulangon:
+    build: ./
+    container_name: ulangon-application
+    ports:
+      - "3030:3030"
+    stdin_open: true
+    tty: true

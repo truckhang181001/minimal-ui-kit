@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useState } from 'react';
+
 // @mui
 import { Container } from '@mui/material';
 // routes
@@ -22,7 +24,17 @@ export default function InvoiceDetails() {
 
   const { id } = useParams();
 
-  const invoice = _invoices.find((invoice) => invoice.id === id);
+  const [invoice, setInvoice] = useState()
+
+  useLayoutEffect(() => {
+    fetch(`http://localhost:8080/api/v1/orders/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setInvoice(data)
+      })
+  }, [])
+
 
   return (
     <Page title="Invoice: View">

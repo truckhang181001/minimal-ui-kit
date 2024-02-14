@@ -17,7 +17,7 @@ export default function InvoicePDF({ invoice }) {
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
+      {/* <Page size="A4" style={styles.page}>
         <View style={[styles.gridContainer, styles.mb40]}>
           <Image source="/logo/logo_full1.jpg" style={{ height: 32 }} />
           <View style={{ alignItems: 'flex-end', flexDirection: 'column' }}>
@@ -141,7 +141,7 @@ export default function InvoicePDF({ invoice }) {
             </View>
           </View>
         </View>
-      </Page>
+      </Page> */}
     </Document>
   );
 }

@@ -38,106 +38,19 @@ export default function InvoiceDetails({ invoice }) {
   // const theme = useTheme();
   const { translate } = useLocales();
 
+  console.log(invoice)
+
   if (!invoice) {
     return null;
   }
 
-  // const { invoiceFrom } = invoice;
+  const { invoiceFrom } = invoice;
 
-  const detailInvoice = {
-    id: '74e058c4-27b0-42f1-a756-c14c5fe23e42',
-    orderID: '27174323-C6ADR263TA2TGX',
-    eater: {
-      name: 'Huynh Truc',
-      mobileNumber: '+8597961691',
-    },
-    address: {
-      address: '69 Lý Tự Trọng, P.Bến Thành, Q.1, Hồ Chí Minh',
-      keywords: 'Thư viện Khoa học Tổng hợp TP.HCM - Cổng Lý Tự Trọng',
-    },
-    storeId: 'd08c7e26-af3b-4c5c-8b98-f83d9c9a7a3c',
-    itemInfo: {
-      count: 1,
-      items: [
-        {
-          name: 'Trà Sữa Hạt Mixed Ulangon',
-          quantity: 1,
-          fare: {
-            currencySymbol: '₫',
-            priceDisplay: '59.000',
-            originalItemPriceDisplay: '49.000',
-            beforeAdjustedPriceDisplay: '49.000',
-          },
-          comment: '',
-          modifierGroups: [
-            {
-              modifierGroupID: 'VNMOG20230712183226014187',
-              modifierGroupName: 'Đá chung hay Đá riêng',
-              modifiers: [
-                {
-                  modifierID: 'VNMOD20230712183226036138',
-                  modifierName: 'Đá riêng (nếu khoảng cách 2km trở lên)',
-                  priceDisplay: '0',
-                  quantity: 1,
-                  revampedPriceDisplay: '0',
-                  editedStatus: 0,
-                },
-              ],
-            },
-          ],
-          discountInfo: [
-            {
-              discountName: 'MÓN ĐỈNH ƯU ĐÃI 10%',
-              discountFunding: '',
-              itemDiscountPriceDisplay: '4.900',
-              isNewPromotion: false,
-              discountType: 'percentage',
-            },
-          ],
-          itemID: 'VNITE20230712183225016219',
-          editedStatus: 0,
-          weight: null,
-          itemCode: 'ITEM-DG7O',
-          specialItemType: '',
-          soldByWeight: false,
-          outOfStockInstruction: null,
-          parentID: '',
-          parentName: '',
-          skuID: '',
-        },
-      ],
-      merchantItems: null,
-    },
-    fare: {
-      totalDisplay: '45.100',
-    },
-    times: {
-      createdAt: '2023-11-19T06:46:40Z',
-      deliveredAt: '2023-11-19T06:56:01Z',
-      completedAt: '2023-11-19T07:18:31Z',
-      expiredAt: '2023-11-19T06:51:40Z',
-      acceptedAt: '2023-11-19T06:46:49Z',
-      cancelledAt: null,
-      readyAt: '2023-11-19T06:49:39Z',
-      displayedAt: '2023-11-19T06:48:54Z',
-      driverArriveRestoAt: null,
-    },
-    orderLevelDiscounts: [
-      {
-        discountType: 'order',
-        discountName: 'BOSS9K',
-        discountAmountDisplay: '9.000',
-        discountAmountValueInMin: 9000,
-        isNewPromotion: false,
-      },
-    ],
-  };
-
-  const { orderID, eater, address, itemInfo, fare, times } = detailInvoice;
+  const { orderID, eater, address, items, fare, time, store } = invoice;
 
   return (
     <>
-      <InvoiceToolbar invoice={detailInvoice} />
+      <InvoiceToolbar invoice={invoice} />
 
       <Card sx={{ pt: 5, px: 5 }}>
         <Grid container>
@@ -155,9 +68,9 @@ export default function InvoiceDetails({ invoice }) {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               {translate('invoiceFrom')}
             </Typography>
-            <Typography variant="body2">{'Bui Minh Kha'}</Typography>
-            <Typography variant="body2">{'279, Nguyen Tri Phuong, Q10, TP.HCM'}</Typography>
-            <Typography variant="body2">Phone: {'0374996432'}</Typography>
+            <Typography variant="body2">{store.gfid}</Typography>
+            <Typography variant="body2">{store.name}</Typography>
+            <Typography variant="body2">{store.address}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
@@ -173,14 +86,14 @@ export default function InvoiceDetails({ invoice }) {
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               {translate('dateCreate')}
             </Typography>
-            <Typography variant="body2">{fDate(times.createdAt)}</Typography>
+            <Typography variant="body2">{fDate(time.createdAt)}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{ mb: 5 }}>
             <Typography paragraph variant="overline" sx={{ color: 'text.disabled' }}>
               {translate('dueDate')}
             </Typography>
-            <Typography variant="body2">{fDate(times.completedAt)}</Typography>
+            <Typography variant="body2">{fDate(time.completedAt)}</Typography>
           </Grid>
         </Grid>
 
@@ -203,7 +116,7 @@ export default function InvoiceDetails({ invoice }) {
               </TableHead>
 
               <TableBody>
-                {itemInfo.items.map((row, index) => (
+                {items.map((row, index) => (
                   <TableRow
                     key={index}
                     sx={{
@@ -215,7 +128,7 @@ export default function InvoiceDetails({ invoice }) {
                       <Box sx={{ maxWidth: 560 }}>
                         <Typography variant="subtitle2">{row.name}</Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                          {row.discountInfo[0].discountName}
+                          {/* {row.discountInfo[0].discountName || "-"} */}
                         </Typography>
                       </Box>
                     </TableCell>
@@ -246,7 +159,7 @@ export default function InvoiceDetails({ invoice }) {
                   </TableCell>
                   <TableCell align="right" width={120}>
                     <Typography sx={{ color: 'error.main' }}>
-                      {fCurrency(-itemInfo.items[0].discountInfo[0].itemDiscountPriceDisplay)}
+                      {/* {fCurrency(-items[0].discountInfo[0].itemDiscountPriceDisplay)} */}
                     </Typography>
                   </TableCell>
                 </RowResultStyle>
