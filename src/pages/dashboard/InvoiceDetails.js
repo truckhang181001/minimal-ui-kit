@@ -27,7 +27,7 @@ export default function InvoiceDetails() {
   const [invoice, setInvoice] = useState()
 
   useLayoutEffect(() => {
-    fetch(`collector:8080/api/v1/orders/${id}`)
+    fetch(`http://13.112.26.201:8080/api/v1/orders/${id}`)
       .then(res => res.json())
       .then(data => {
         console.log(data)
