@@ -151,7 +151,7 @@ export default function InvoiceList() {
 
   useEffect(() => {
     
-    const url = 'http://collector:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
+    const url = 'collector:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
 
     fetch(url)
     .then(res => res.json())

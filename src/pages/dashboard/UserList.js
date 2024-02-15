@@ -125,7 +125,7 @@ export default function UserList() {
     (!dataFiltered.length && !!filterStatus);
 
   useEffect(() => {
-    fetch('http://collector:8080/api/v1/eaters')
+    fetch('collector:8080/api/v1/eaters')
       .then(res => res.json())
       .then(data => {
         setTableData(data.content)

@@ -7,7 +7,7 @@ export const InvoicePrintRow = React.forwardRef(({ row }, ref) => {
     const [orderDetail, setOrderDetail] = useState();
 
     useEffect(() => {
-        fetch(`http://collector:8080/api/v1/orders/${row.id}`)
+        fetch(`collector:8080/api/v1/orders/${row.id}`)
             .then(res => res.json())
             .then(data => {
                 setOrderDetail(data)
