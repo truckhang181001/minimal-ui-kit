@@ -4,7 +4,7 @@ import { useReactToPrint } from 'react-to-print';
 // @mui
 import { Checkbox, TableRow, TableCell, Typography, Stack, Link, MenuItem } from '@mui/material';
 // utils
-import { fDate } from '../../../../utils/formatTime';
+import { fDate, fDateTime } from '../../../../utils/formatTime';
 import createAvatar from '../../../../utils/createAvatar';
 // components
 import Avatar from '../../../../components/Avatar';
@@ -76,7 +76,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         </Stack>
       </TableCell>
 
-      <TableCell align="left">{fDate(time.createdAt)}</TableCell>
+      <TableCell align="left">{fDateTime(time.createdAt)}</TableCell>
 
       <TableCell align="left">{address.address}</TableCell>
 

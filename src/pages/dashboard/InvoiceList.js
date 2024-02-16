@@ -37,8 +37,6 @@ import InvoiceAnalytic from '../../sections/@dashboard/invoice/InvoiceAnalytic';
 import { InvoiceTableRow, InvoiceTableToolbar } from '../../sections/@dashboard/invoice/list';
 import useLocales from '../../hooks/useLocales';
 
-const SERVICE_OPTIONS = ['all', 'option 1', 'option 2', 'option 3'];
-
 export default function InvoiceList() {
   const theme = useTheme();
   const { translate } = useLocales();
@@ -80,7 +78,7 @@ export default function InvoiceList() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [filterService, setFilterService] = useState('all');
+  const [filterService, setFilterService] = useState();
 
   const [filterStartDate, setFilterStartDate] = useState(null);
 
@@ -90,13 +88,19 @@ export default function InvoiceList() {
 
   const [invoice, setInvoice] = useState([]);
 
+  const [stores, setStores] = useState(['All Stores'])
+
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
     setPage(0);
   };
 
   const handleFilterService = (event) => {
-    setFilterService(event.target.value);
+    stores.forEach((storeItem) => {
+      if (event.target.value === storeItem.name) {
+        setFilterService(storeItem.id);
+      }
+    })
   };
 
   const handleDeleteRow = (id) => {
@@ -120,47 +124,68 @@ export default function InvoiceList() {
     navigate(PATH_DASHBOARD.invoice.view(id));
   };
 
-  const dataFiltered = applySortFilter({
-    tableData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-    filterService,
-    filterStatus,
-    filterStartDate,
-    filterEndDate,
-  });
+  // const dataFiltered = applySortFilter({
+  //   tableData,
+  //   comparator: getComparator(order, orderBy),
+  //   filterName,
+  //   filterService,
+  //   filterStatus,
+  //   filterStartDate,
+  //   filterEndDate,
+  // });
 
   const denseHeight = dense ? 56 : 76;
 
-  const isNotFound =
-    (!dataFiltered.length && !!filterName) ||
-    (!dataFiltered.length && !!filterStatus) ||
-    (!dataFiltered.length && !!filterService) ||
-    (!dataFiltered.length && !!filterEndDate) ||
-    (!dataFiltered.length && !!filterStartDate);
+  // const isNotFound =
+  //   (!dataFiltered.length && !!filterName) ||
+  //   (!dataFiltered.length && !!filterStatus) ||
+  //   (!dataFiltered.length && !!filterService) ||
+  //   (!dataFiltered.length && !!filterEndDate) ||
+  //   (!dataFiltered.length && !!filterStartDate);
 
-  const getLengthByStatus = (status) => tableData.filter((item) => item.status === status).length;
+  // const getLengthByStatus = (status) => tableData.filter((item) => item.status === status).length;
 
-  const getTotalPriceByStatus = (status) =>
-    sumBy(
-      tableData.filter((item) => item.status === status),
-      'totalPrice'
-    );
+  // const getTotalPriceByStatus = (status) =>
+  //   sumBy(
+  //     tableData.filter((item) => item.status === status),
+  //     'totalPrice'
+  //   );
 
-  const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
+  // const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   useEffect(() => {
-    
+
+    fetch('http://13.112.26.201:8080/api/v1/stores/all')
+      .then(res => res.json())
+      .then(data => {
+        setStores(data);
+      })
+
     const url = 'http://13.112.26.201:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
 
     fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      setInvoice(data.content);
-      setTableData(data.content);
-    })
+      .then(res => res.json())
+      .then(data => {
+        setInvoice(data.content);
+        setTableData(data.content);
+      })
   }, []);
+
+  useEffect(() => {
+
+    if (filterService) {
+
+      console.log(filterService)
+      const url = `http://13.112.26.201:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc&storeId=${filterService}`
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          setInvoice(data.content);
+          setTableData(data.content);
+        })
+    }
+  }, [filterService])
 
   return (
     <Page title="Invoice: List">
@@ -239,7 +264,7 @@ export default function InvoiceList() {
             onFilterEndDate={(newValue) => {
               setFilterEndDate(newValue);
             }}
-            optionsService={SERVICE_OPTIONS}
+            optionsService={stores.map((item) => item.name)}
           />
 
           <Scrollbar>
@@ -316,7 +341,7 @@ export default function InvoiceList() {
 
                   <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
 
-                  <TableNoData isNotFound={isNotFound} />
+                  <TableNoData isNotFound={invoice === null || invoice.length === 0} />
                 </TableBody>
               </Table>
             </TableContainer>
@@ -326,7 +351,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={invoice.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}

@@ -36,7 +36,7 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         select
-        label="Filter something"
+        label="Filter Stores"
         value={filterService}
         onChange={onFilterService}
         SelectProps={{
