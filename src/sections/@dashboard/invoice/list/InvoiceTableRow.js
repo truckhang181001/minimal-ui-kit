@@ -54,7 +54,11 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
 
-      <TableCell align="center" sx={{ textTransform: 'capitalize' }}>{displayId}</TableCell>
+      <TableCell align="center" sx={{ textTransform: 'capitalize' }} onClick={onViewRow}>
+        <Link noWrap variant="body2" onClick={onViewRow} sx={{ color: 'Black', cursor: 'pointer', fontWeight: 'bold' }}>
+          {displayId}
+        </Link>
+      </TableCell>
 
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar alt={eater.name || "-"} color={createAvatar(eater.name || "-").color} sx={{ mr: 2 }}>
@@ -62,7 +66,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
         </Avatar>
 
         <Stack>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle3" noWrap>
             {eater.name || "-"}
           </Typography>
 
@@ -96,13 +100,13 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
       <InvoicePrintRow key={row.id} row={row} ref={printRowRef} />
 
       <TableCell align="right">
-        <TableMoreMenu
+        {/* <TableMoreMenu
           open={openMenu}
           onOpen={handleOpenMenu}
           onClose={handleCloseMenu}
           actions={
             <>
-              {/* <MenuItem
+              <MenuItem
                 onClick={() => {
                   onDeleteRow();
                   handleCloseMenu();
@@ -111,7 +115,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
               >
                 <Iconify icon={'eva:trash-2-outline'} />
                 {translate('delete')}
-              </MenuItem> */}
+              </MenuItem>
 
               <MenuItem
                 onClick={() => {
@@ -123,7 +127,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
                 {translate('view')}
               </MenuItem>
 
-              {/* <MenuItem
+              <MenuItem
                 onClick={() => {
                   onEditRow();
                   handleCloseMenu();
@@ -131,20 +135,18 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
               >
                 <Iconify icon={'eva:edit-fill'} />
                 {translate('edit')}
-              </MenuItem> */}
-
-              <MenuItem
-                onClick={() => {
-                  handlePrint();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:eye-fill'} />
-                {"Print"}
               </MenuItem>
             </>
           }
-        />
+        /> */}
+        <MenuItem
+          onClick={() => {
+            handlePrint();
+            handleCloseMenu();
+          }}
+        >
+          <Iconify icon={'twemoji:printer'}/>
+        </MenuItem>
       </TableCell>
     </TableRow>
   );
