@@ -155,13 +155,13 @@ export default function InvoiceList() {
 
   useEffect(() => {
 
-    fetch('http://13.112.26.201:8080/api/v1/stores/all')
+    fetch('http://43.205.37.233:8080/api/v1/stores/all')
       .then(res => res.json())
       .then(data => {
         setStores(data);
       })
 
-    const url = 'http://13.112.26.201:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
+    const url = 'http://43.205.37.233:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
 
     fetch(url)
       .then(res => res.json())
@@ -176,7 +176,7 @@ export default function InvoiceList() {
     if (filterService) {
 
       console.log(filterService)
-      const url = `http://13.112.26.201:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc&storeId=${filterService}`
+      const url = `http://43.205.37.233:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc&storeId=${filterService}`
 
       fetch(url)
         .then(res => res.json())

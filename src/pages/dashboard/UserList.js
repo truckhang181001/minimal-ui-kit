@@ -125,7 +125,7 @@ export default function UserList() {
     (!dataFiltered.length && !!filterStatus);
 
   useEffect(() => {
-    fetch('http://13.112.26.201:8080/api/v1/eaters')
+    fetch('http://43.205.37.233:8080/api/v1/eaters')
       .then(res => res.json())
       .then(data => {
         setTableData(data.content)
