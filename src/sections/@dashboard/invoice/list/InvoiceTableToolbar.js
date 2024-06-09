@@ -66,7 +66,7 @@ export default function InvoiceTableToolbar({
         ))}
       </TextField>
 
-      <DatePicker
+      {/* <DatePicker
         label={translate('startDate')}
         value={filterStartDate}
         onChange={onFilterStartDate}
@@ -94,13 +94,13 @@ export default function InvoiceTableToolbar({
             }}
           />
         )}
-      />
+      /> */}
 
       <TextField
         fullWidth
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search blabla..."
+        placeholder="Search by order id..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

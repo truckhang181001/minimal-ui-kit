@@ -96,11 +96,22 @@ export default function InvoiceList() {
   };
 
   const handleFilterService = (event) => {
+
+    let matchFlag = false
+
     stores.forEach((storeItem) => {
-      if (event.target.value === storeItem.name) {
-        setFilterService(storeItem.id);
+      if (event.target.value === `${storeItem.platform} - ${storeItem.name}`) {
+        setFilterService(storeItem.id ? storeItem.id : ''); 
+        setInvoice([]);
+        matchFlag = true
       }
     })
+
+    if (!matchFlag && filterService !== '') {
+      console.log('Not match')
+      setFilterService(''); 
+      setInvoice([]);
+    }
   };
 
   const handleDeleteRow = (id) => {
@@ -123,16 +134,16 @@ export default function InvoiceList() {
   const handleViewRow = (id) => {
     navigate(PATH_DASHBOARD.invoice.view(id));
   };
-
-  // const dataFiltered = applySortFilter({
-  //   tableData,
-  //   comparator: getComparator(order, orderBy),
-  //   filterName,
-  //   filterService,
-  //   filterStatus,
-  //   filterStartDate,
-  //   filterEndDate,
-  // });
+  
+  const dataFiltered = applySortFilter({
+    tableData: invoice,
+    comparator: getComparator(order, orderBy),
+    filterName,
+    filterService,
+    filterStatus,
+    filterStartDate,
+    filterEndDate,
+  });
 
   const denseHeight = dense ? 56 : 76;
 
@@ -154,37 +165,21 @@ export default function InvoiceList() {
   // const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   useEffect(() => {
-
     fetch('http://43.205.37.233:8080/api/v1/stores/all')
       .then(res => res.json())
       .then(data => {
-        setStores(data);
-      })
-
-    const url = 'http://43.205.37.233:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc'
-
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setInvoice(data.content);
-        setTableData(data.content);
+        setStores([{platform: 'ALL', name: 'STORE'}, ...data]);
       })
   }, []);
 
   useEffect(() => {
-
-    if (filterService) {
-
-      console.log(filterService)
-      const url = `http://43.205.37.233:8080/api/v1/orders?size=100&sort=createdAt%2Cdesc&storeId=${filterService}`
-
-      fetch(url)
+    const url = `http://43.205.37.233:8080/api/v1/orders?size=500&sort=createdAt%2Cdesc&storeId=${filterService || ''}`
+    fetch(url)
         .then(res => res.json())
         .then(data => {
           setInvoice(data.content);
           setTableData(data.content);
-        })
-    }
+        }) 
   }, [filterService])
 
   return (
@@ -264,7 +259,7 @@ export default function InvoiceList() {
             onFilterEndDate={(newValue) => {
               setFilterEndDate(newValue);
             }}
-            optionsService={stores.map((item) => item.name)}
+            optionsService={stores.map((item) => `${item.platform} - ${item.name}`)}
           />
 
           <Scrollbar>
@@ -315,7 +310,7 @@ export default function InvoiceList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={invoice.length}
+                  rowCount={dataFiltered.length}
                   numSelected={selected.length}
                   onSort={onSort}
                   onSelectAllRows={(checked) =>
@@ -327,7 +322,7 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {invoice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}
@@ -351,7 +346,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={invoice.length}
+              count={dataFiltered.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -381,6 +376,7 @@ function applySortFilter({
   filterStartDate,
   filterEndDate,
 }) {
+
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -394,25 +390,25 @@ function applySortFilter({
   if (filterName) {
     tableData = tableData.filter(
       (item) =>
-        item.invoiceNumber.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
-        item.invoiceTo.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+        item.displayId.toLowerCase().indexOf(filterName.toLowerCase()) !== -1 ||
+        item.grabOrderId.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
-  if (filterStatus !== 'all') {
-    tableData = tableData.filter((item) => item.status === filterStatus);
-  }
+  // if (filterStatus !== 'all') {
+  //   tableData = tableData.filter((item) => item.status === filterStatus);
+  // }
 
-  if (filterService !== 'all') {
-    tableData = tableData.filter((item) => item.items.some((c) => c.service === filterService));
-  }
+  // if (filterService !== 'all') {
+  //   tableData = tableData.filter((item) => item.items.some((c) => c.service === filterService));
+  // }
 
-  if (filterStartDate && filterEndDate) {
-    tableData = tableData.filter(
-      (item) =>
-        item.createDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
-    );
-  }
+  // if (filterStartDate && filterEndDate) {
+  //   tableData = tableData.filter(
+  //     (item) =>
+  //       item.createDate.getTime() >= filterStartDate.getTime() && item.createDate.getTime() <= filterEndDate.getTime()
+  //   );
+  // }
 
   return tableData;
 }
