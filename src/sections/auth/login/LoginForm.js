@@ -31,14 +31,13 @@ export default function LoginForm() {
   });
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    email: 'khangnt@viettelidc.com.vn',
+    password: 'Vtdc@123',
     remember: true,
   };
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
   });
 
   const {

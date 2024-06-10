@@ -77,14 +77,15 @@ export default function Login() {
 
         {mdUp && (
           <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+            {/* <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               {translate('wellcome')}
-            </Typography>
+            </Typography> */}
             <Image
               visibleByDefault
               disabledEffect
               alt="login"
-              src="https://img.freepik.com/free-vector/vietnam-background-design_1271-192.jpg"
+              src="/logo/ulangon_background.png"
+              style={{padding: 50, "border-radius": 500}}
             />
           </SectionStyle>
         )}

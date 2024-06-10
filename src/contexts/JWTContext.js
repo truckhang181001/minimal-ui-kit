@@ -68,14 +68,15 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     const initialize = async () => {
+      console.log('initial user')
       try {
         const accessToken = window.localStorage.getItem('accessToken');
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const response = await axios.get('/api/v1/account/info');
+          const user = response.data;
 
           dispatch({
             type: 'INITIALIZE',
@@ -109,13 +110,17 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post('/api/v1/auth/login', {
       email,
       password,
     });
-    const { accessToken, user } = response.data;
+    const { accessToken } = response.data;
 
     setSession(accessToken);
+
+    const accountInfoResponse = await axios.get('/api/v1/account/info');
+    const user = accountInfoResponse.data;
+
     dispatch({
       type: 'LOGIN',
       payload: {
