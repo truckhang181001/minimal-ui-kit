@@ -27,6 +27,8 @@ import useSettings from '../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 // _mock_
 import { _userList } from '../../_mock';
+// utils
+import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -125,11 +127,15 @@ export default function UserList() {
     (!dataFiltered.length && !!filterStatus);
 
   useEffect(() => {
-    fetch('http://43.205.37.233:8080/api/v1/eaters')
-      .then(res => res.json())
-      .then(data => {
-        setTableData(data.content)
-      })
+    const getData = async () => {
+      try {
+        const response = await axios.get('/api/v1/eaters');
+        setTableData(response.data.content)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
   }, [])
 
   return (

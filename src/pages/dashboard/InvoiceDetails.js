@@ -7,6 +7,8 @@ import { Container } from '@mui/material';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // _mock_
 import { _invoices } from '../../_mock';
+// utils
+import axios from '../../utils/axios';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import useLocales from '../../hooks/useLocales';
@@ -27,14 +29,16 @@ export default function InvoiceDetails() {
   const [invoice, setInvoice] = useState()
 
   useLayoutEffect(() => {
-    fetch(`http://43.205.37.233:8080/api/v1/orders/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setInvoice(data)
-      })
+    const getData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/orders/${id}`);
+        setInvoice(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
   }, [])
-
 
   return (
     <Page title="Invoice: View">

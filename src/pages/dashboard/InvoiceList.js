@@ -26,6 +26,8 @@ import useSettings from '../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 // _mock_
 import { _invoices } from '../../_mock';
+// utils
+import axios from '../../utils/axios';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -165,21 +167,28 @@ export default function InvoiceList() {
   // const getPercentByStatus = (status) => (getLengthByStatus(status) / tableData.length) * 100;
 
   useEffect(() => {
-    fetch('http://43.205.37.233:8080/api/v1/stores/all')
-      .then(res => res.json())
-      .then(data => {
-        setStores([{platform: 'ALL', name: 'STORE'}, ...data]);
-      })
+    const getData = async () => {
+      try {
+        const response = await axios.get('/api/v1/stores/all');
+        setStores([{platform: 'ALL', name: 'STORE'}, ...response.data]);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
   }, []);
 
   useEffect(() => {
-    const url = `http://43.205.37.233:8080/api/v1/orders?size=500&sort=createdAt%2Cdesc&storeId=${filterService || ''}`
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          setInvoice(data.content);
-          setTableData(data.content);
-        }) 
+    const getData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/orders?size=500&sort=createdAt%2Cdesc&storeId=${filterService || ''}`);
+        setInvoice(response.data.content);
+        setTableData(response.data.content);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getData()
   }, [filterService])
 
   return (

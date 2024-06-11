@@ -1,5 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { fDateTime } from '../../../../utils/formatTime';
+// utils
+import axios from '../../../../utils/axios';
+// css
 import './InvoicePrintRow.css'
 
 export const InvoicePrintRow = React.forwardRef(({ row }, ref) => {
@@ -7,11 +10,11 @@ export const InvoicePrintRow = React.forwardRef(({ row }, ref) => {
     const [orderDetail, setOrderDetail] = useState();
 
     useEffect(() => {
-        fetch(`http://43.205.37.233:8080/api/v1/orders/${row.id}`)
-            .then(res => res.json())
-            .then(data => {
-                setOrderDetail(data)
-            })
+        const getData = async () => {
+            const response = await axios.get(`/api/v1/orders/${row.id}`);
+            setOrderDetail(response.data)
+        }
+        getData()
     }, [])
 
     let curItem = 0
