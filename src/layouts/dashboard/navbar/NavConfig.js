@@ -77,6 +77,18 @@ const navConfig = (translate) => [
         ],
       },
 
+      {
+        title: "Map",
+        path: PATH_DASHBOARD.invoice.root,
+        icon: ICONS.analytics,
+        children: [
+          { title: "Map", path: PATH_DASHBOARD.map.root },
+          // { title: translate('details'), path: PATH_DASHBOARD.invoice.demoView },
+          // { title: translate('create'), path: PATH_DASHBOARD.invoice.new },
+          // { title: translate('edit'), path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
+      },
+
       // // BLOG
       // {
       //   title: translate('blog'),

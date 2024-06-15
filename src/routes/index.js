@@ -111,6 +111,7 @@ export default function Router() {
             { path: 'new', element: <BlogNewPost /> },
           ],
         },
+        { path: 'map', element: <Map /> }
       ],
     },
 
@@ -176,6 +177,8 @@ const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
+
+const Map = Loadable(lazy(() => import('../pages/dashboard/Map')))
 
 // APP
 // const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
