@@ -23,3 +23,11 @@ export function fToNow(date) {
     addSuffix: true
   });
 }
+
+export function fInstant(dataString) {
+  const date = new Date(dataString);
+  // Set the time to midnight (00:00:00) of the same date
+  date.setHours(0, 0, 0, 0);
+  // Convert to ISO string (UTC)
+  return date.toISOString();
+}

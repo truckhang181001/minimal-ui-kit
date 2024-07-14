@@ -90,6 +90,9 @@ export const PATH_DASHBOARD = {
   },
   map: {
     root: path(ROOTS_DASHBOARD, '/map')
+  },
+  orderItem: {
+    root: path(ROOTS_DASHBOARD, '/order-item')
   }
 };
 

@@ -12,7 +12,7 @@ import { TableMoreMenu } from '../../../../components/table';
 
 // ----------------------------------------------------------------------
 
-UserTableRow.propTypes = {
+OrderItemTableRow.propTypes = {
   row: PropTypes.object,
   selected: PropTypes.bool,
   onEditRow: PropTypes.func,
@@ -20,10 +20,11 @@ UserTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
 };
 
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+export default function OrderItemTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, mobileNumber, totalPayment, lastOrderedAt, eaterTier } = row;
+  const { id, name, platform, storeId, storeName, totalGrossSales, previousTotalGrossSales,
+    totalNetSales, previousTotalNetSales, totalUnitsSold, previousTotalUnitsSold } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -50,35 +51,19 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         </Typography>
       </TableCell>
 
-      <TableCell align="left">{mobileNumber}</TableCell>
+      <TableCell align="left">{`${storeName} - ${platform}`}</TableCell>
 
-      <TableCell align="left">{totalPayment}</TableCell>
+      <TableCell align="left">{totalGrossSales}</TableCell>
 
-      <TableCell align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={(eaterTier === 'banned' && 'error') || 'success'}
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {eaterTier}
-        </Label>
-      </TableCell>
+      <TableCell align="left">{previousTotalGrossSales}</TableCell>
 
-      <TableCell align="center">{fDateTime(lastOrderedAt)}</TableCell>
+      <TableCell align="left">{totalNetSales}</TableCell>
 
-{/*
-      <TableCell align="center">
-        <Iconify
-          icon={isVerified ? 'eva:checkmark-circle-fill' : 'eva:clock-outline'}
-          sx={{
-            width: 20,
-            height: 20,
-            color: 'success.main',
-            ...(!isVerified && { color: 'warning.main' }),
-          }}
-        />
-      </TableCell>
-*/}
+      <TableCell align="left">{previousTotalNetSales}</TableCell>
+
+      <TableCell align="left">{totalUnitsSold}</TableCell>
+
+      <TableCell align="left">{previousTotalUnitsSold}</TableCell>
 
       <TableCell align="right">
         <TableMoreMenu

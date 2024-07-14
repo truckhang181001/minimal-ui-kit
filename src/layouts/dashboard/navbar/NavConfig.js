@@ -36,18 +36,18 @@ const navConfig = (translate) => [
     subheader: translate('managementUpcase'),
     items: [
       // // USER
-      // {
-      //   title: translate('user'),
-      //   path: PATH_DASHBOARD.user.root,
-      //   icon: ICONS.user,
-      //   children: [
-      //     { title: translate('cards'), path: PATH_DASHBOARD.user.cards },
-      //     { title: translate('list'), path: PATH_DASHBOARD.user.list },
-      //     { title: translate('create'), path: PATH_DASHBOARD.user.new },
-      //     { title: translate('edit'), path: PATH_DASHBOARD.user.demoEdit },
-      //     { title: translate('account'), path: PATH_DASHBOARD.user.account },
-      //   ],
-      // },
+      {
+        title: translate('user'),
+        path: PATH_DASHBOARD.user.list,
+        icon: ICONS.user,
+        // children: [
+        //   { title: translate('cards'), path: PATH_DASHBOARD.user.cards },
+        //   { title: translate('list'), path: PATH_DASHBOARD.user.list },
+        //   { title: translate('create'), path: PATH_DASHBOARD.user.new },
+        //   { title: translate('edit'), path: PATH_DASHBOARD.user.demoEdit },
+        //   { title: translate('account'), path: PATH_DASHBOARD.user.account },
+        // ],
+      },
 
       // // E-COMMERCE
       // {
@@ -67,26 +67,26 @@ const navConfig = (translate) => [
       // INVOICE
       {
         title: translate('invoice'),
-        path: PATH_DASHBOARD.invoice.root,
+        path: PATH_DASHBOARD.invoice.list,
         icon: ICONS.invoice,
-        children: [
-          { title: translate('list'), path: PATH_DASHBOARD.invoice.list },
-          // { title: translate('details'), path: PATH_DASHBOARD.invoice.demoView },
-          // { title: translate('create'), path: PATH_DASHBOARD.invoice.new },
-          // { title: translate('edit'), path: PATH_DASHBOARD.invoice.demoEdit },
-        ],
+        // children: [
+        //   { title: translate('list'), path: PATH_DASHBOARD.invoice.list },
+        //   // { title: translate('details'), path: PATH_DASHBOARD.invoice.demoView },
+        //   // { title: translate('create'), path: PATH_DASHBOARD.invoice.new },
+        //   // { title: translate('edit'), path: PATH_DASHBOARD.invoice.demoEdit },
+        // ],
       },
 
       {
         title: "Map",
-        path: PATH_DASHBOARD.invoice.root,
-        icon: ICONS.analytics,
-        children: [
-          { title: "Map", path: PATH_DASHBOARD.map.root },
-          // { title: translate('details'), path: PATH_DASHBOARD.invoice.demoView },
-          // { title: translate('create'), path: PATH_DASHBOARD.invoice.new },
-          // { title: translate('edit'), path: PATH_DASHBOARD.invoice.demoEdit },
-        ],
+        path: PATH_DASHBOARD.map.root,
+        icon: ICONS.analytics
+      },
+
+      {
+        title: "Product",
+        path: PATH_DASHBOARD.orderItem.root,
+        icon: ICONS.cart
       },
 
       // // BLOG

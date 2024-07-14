@@ -25,8 +25,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import useTabs from '../../hooks/useTabs';
 import useSettings from '../../hooks/useSettings';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
-// _mock_
-import { _userList } from '../../_mock';
 // utils
 import axios from '../../utils/axios';
 // components
@@ -36,29 +34,31 @@ import Scrollbar from '../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
-import { UserTableToolbar, UserTableRow } from '../../sections/@dashboard/user/list';
+import { OrderItemTableToolbar, OrderItemTableRow } from '../../sections/@dashboard/orderitem/list';
+import { fDateTime, fInstant } from '../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ['all'];
 
-const STORE_OPTIONS = new Map([['ALL', null]]);
+const PLATFORM_OPTIONS = new Map([
+  ['ALL', null],
+  ['GRAB', 'GRAB'],
+  ['SHOPEE', 'SHOPEE'],
+]);
 
-const TIERS_OPTIONS = new Map([
-  ["ALL", null],
-  ["NEW", "NEW"],
-  ["CHUNK", "CHUNK"],
-  ["LOYAL 1", "LOYAL_1"],
-  ["LOYAL 2", "LOYAL_2"],
-  ["LOYAL 3", "LOYAL_3"],
-])
+const START_DATE = new Date();
+START_DATE.setMonth(START_DATE.getMonth() - 1);
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
-  { id: 'mobileNumber', label: 'Mobile Number', align: 'left' },
-  { id: 'totalPayment', label: 'Total Payment', align: 'left' },
-  { id: 'eaterTier', label: 'Tier', align: 'center' },
-  { id: 'lastOrderAt', label: 'Last Ordered At', align: 'center' },
+  { id: 'storeName', label: 'Store', align: 'left' },
+  { id: 'totalGrossSales', label: 'Gross Sales', align: 'left' },
+  { id: 'previousTotalGrossSales', label: 'Previous Gross Sales', align: 'left' },
+  { id: 'totalNetSales', label: 'Net Sales', align: 'left' },
+  { id: 'previousTotalNetSales', label: 'Previous Net Sales', align: 'left' },
+  { id: 'totalUnitsSold', label: 'Units Sold', align: 'left' },
+  { id: 'previousTotalUnitsSold', label: 'Previous Unit Sold', align: 'left' },
   { id: '' },
 ];
 
@@ -88,27 +88,30 @@ export default function UserList() {
 
   const [tableData, setTableData] = useState([]);
 
-  const [totalElements, setTotalElements] = useState(0);
-
   const [filterName, setFilterName] = useState('');
 
-  const [filterStore, setFilterStore] = useState('ALL');
+  const [filterPlatform, setFilterPlatform] = useState('ALL');
 
-  const [filterTier, setFilterTier] = useState('ALL');
+  const [filterStartDate, setFilterStartDate] = useState(START_DATE);
+
+  const [filterEndDate, setFilterEndDate] = useState(new Date());
 
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
-    setPage(0);
   };
 
-  const handleFilterTier = (event) => {
-    setFilterTier(event.target.value);
+  const handleFilterPlatform = (event) => {
+    setFilterPlatform(event.target.value);
   };
 
-  const handleFilterStore = (event) => {
-    setFilterStore(event.target.value);
+  const handleFilterStartDate = (date) => {
+    setFilterStartDate(date);
+  };
+
+  const handleFilterEndDate = (date) => {
+    setFilterEndDate(date);
   };
 
   const handleDeleteRow = (id) => {
@@ -129,61 +132,39 @@ export default function UserList() {
 
   const denseHeight = dense ? 52 : 72;
 
-  const isNotFound =
-    (!tableData.length && !!filterName) || (!tableData.length && !!filterStore) || (!tableData.length && !!filterTier);
+  const dataFiltered = applySortFilter({
+    tableData,
+    comparator: getComparator(order, orderBy),
+    filterName,
+  });
+
+  const isNotFound = ((!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterPlatform));
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get('/api/v1/stores/all');
-        response.data.forEach((store) => {
-          STORE_OPTIONS.set(`${store.platform} - ${store.name}`, store.id);
-        });
-
+        const response = await axios.get(`/api/v1/order-items/insight?`
+          .concat(`&platform=${PLATFORM_OPTIONS.get(filterPlatform) || ''}`)
+          .concat(`&startDate=${fInstant(filterStartDate)}`)
+          .concat(`&endDate=${fInstant(filterEndDate)}`),
+        );
+        setTableData(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/eaters?`
-          .concat(`size=${rowsPerPage}`)
-          .concat(`&page=${page}`)
-          .concat(`&storeId=${STORE_OPTIONS.get(filterStore) || ''}`)
-          .concat(`&eaterTier=${TIERS_OPTIONS.get(filterTier) || ''}`));
-        setTableData(response.data.content);
-        setTotalElements(response.data.totalElements);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, [rowsPerPage, page, filterStore, filterTier]);
+  }, [filterPlatform, filterStartDate, filterEndDate]);
 
   return (
-    <Page title="User: List">
+    <Page title="Product: Insight Report">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="User List"
+          heading="Product: Insight Report"
           links={[
+            { name: 'Product' },
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'List' },
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.new}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              New User
-            </Button>
-          }
         />
 
         <Card>
@@ -202,15 +183,16 @@ export default function UserList() {
 
           <Divider />
 
-          <UserTableToolbar
+          <OrderItemTableToolbar
             filterName={filterName}
-            filterStore={filterStore}
-            filterTier={filterTier}
+            filterPlatform={filterPlatform}
             onFilterName={handleFilterName}
-            onFilterStore={handleFilterStore}
-            onFilterTier={handleFilterTier}
-            optionsStore={Array.from(STORE_OPTIONS.keys())}
-            optionsTier={Array.from(TIERS_OPTIONS.keys())}
+            onFilterPlatform={handleFilterPlatform}
+            optionsPlatform={Array.from(PLATFORM_OPTIONS.keys())}
+            filterStartDate={filterStartDate}
+            onFilterStartDate={handleFilterStartDate}
+            filterEndDate={filterEndDate}
+            onFilterEndDate={handleFilterEndDate}
           />
 
           <Scrollbar>
@@ -219,11 +201,11 @@ export default function UserList() {
                 <TableSelectedActions
                   dense={dense}
                   numSelected={selected.length}
-                  rowCount={tableData.length}
+                  rowCount={dataFiltered.length}
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id),
+                      dataFiltered.map((row) => row.id),
                     )
                   }
                   actions={
@@ -241,20 +223,20 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={tableData.length}
+                  rowCount={dataFiltered.length}
                   numSelected={selected.length}
                   onSort={onSort}
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id),
+                      dataFiltered.map((row) => row.id),
                     )
                   }
                 />
 
                 <TableBody>
-                  {tableData.map((row) => (
-                    <UserTableRow
+                  {dataFiltered.map((row) => (
+                    <OrderItemTableRow
                       key={row.id}
                       row={row}
                       selected={selected.includes(row.id)}
@@ -264,33 +246,34 @@ export default function UserList() {
                     />
                   ))}
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, tableData.length)} />
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)} />
 
                   <TableNoData isNotFound={isNotFound} />
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
-
-          <Box sx={{ position: 'relative' }}>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={totalElements}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onChangePage}
-              onRowsPerPageChange={onChangeRowsPerPage}
-            />
-
-            <FormControlLabel
-              control={<Switch checked={dense} onChange={onChangeDense} />}
-              label="Dense"
-              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-            />
-          </Box>
         </Card>
       </Container>
     </Page>
   );
+}
+
+function applySortFilter({ tableData, comparator, filterName }) {
+  const stabilizedThis = tableData.map((el, index) => [el, index]);
+
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  tableData = stabilizedThis.map((el) => el[0]);
+
+  if (filterName) {
+    tableData = tableData.filter(
+      (item) => item.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1);
+  }
+
+  return tableData;
 }
