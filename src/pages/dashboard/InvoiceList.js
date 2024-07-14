@@ -78,6 +78,8 @@ export default function InvoiceList() {
 
   const [tableData, setTableData] = useState([]);
 
+  const [totalElement, setTotalElement] = useState(0);
+
   const [filterName, setFilterName] = useState('');
 
   const [filterService, setFilterService] = useState();
@@ -114,6 +116,8 @@ export default function InvoiceList() {
       setFilterService(''); 
       setInvoice([]);
     }
+
+    setPage(0)
   };
 
   const handleDeleteRow = (id) => {
@@ -181,15 +185,16 @@ export default function InvoiceList() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`/api/v1/orders?size=500&sort=createdAt%2Cdesc&storeId=${filterService || ''}`);
+        const response = await axios.get(`/api/v1/orders?size=${rowsPerPage}&page=${page}&orderId=${filterName || ''}&sort=createdAt%2Cdesc&storeId=${filterService || ''}`);
         setInvoice(response.data.content);
         setTableData(response.data.content);
+        setTotalElement(response.data.totalElements)
       } catch (error) {
         console.log(error)
       }
     }
     getData()
-  }, [filterService])
+  }, [filterService, rowsPerPage, page, filterName])
 
   return (
     <Page title="Invoice: List">
@@ -331,7 +336,7 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {invoice.map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}
@@ -355,7 +360,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={totalElement}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}

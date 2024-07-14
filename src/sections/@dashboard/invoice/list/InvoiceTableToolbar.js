@@ -99,7 +99,10 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         value={filterName}
-        onChange={(event) => onFilterName(event.target.value)}
+        onChange={(event) => {
+          console.log(event)
+          onFilterName(event.target.value)
+        }}
         placeholder="Search by order id..."
         InputProps={{
           startAdornment: (
