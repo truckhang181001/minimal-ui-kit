@@ -28,6 +28,7 @@ import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 import { _invoices } from '../../_mock';
 // utils
 import axios from '../../utils/axios';
+import { fInstant } from '../../utils/formatTime';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
@@ -78,7 +79,11 @@ export default function InvoiceList() {
 
   const [tableData, setTableData] = useState([]);
 
+  const [totalElement, setTotalElement] = useState(0);
+
   const [filterName, setFilterName] = useState('');
+
+  const [pressEnter, setPressEnter] = useState(false);
 
   const [filterService, setFilterService] = useState();
 
@@ -90,30 +95,46 @@ export default function InvoiceList() {
 
   const [invoice, setInvoice] = useState([]);
 
-  const [stores, setStores] = useState(['All Stores'])
+  const [stores, setStores] = useState(['All Stores']);
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
     setPage(0);
+    if (filterName === '') {
+      setPressEnter(!pressEnter);
+    }
+  };
+
+  const handlePressEnter = () => {
+    setPressEnter(!pressEnter);
   };
 
   const handleFilterService = (event) => {
-
-    let matchFlag = false
+    let matchFlag = false;
 
     stores.forEach((storeItem) => {
       if (event.target.value === `${storeItem.platform} - ${storeItem.name}`) {
-        setFilterService(storeItem.id ? storeItem.id : ''); 
+        setFilterService(storeItem.id ? storeItem.id : '');
         setInvoice([]);
-        matchFlag = true
+        matchFlag = true;
       }
-    })
+    });
 
     if (!matchFlag && filterService !== '') {
-      console.log('Not match')
-      setFilterService(''); 
+      console.log('Not match');
+      setFilterService('');
       setInvoice([]);
     }
+
+    setPage(0);
+  };
+
+  const handleFilterStartDate = (date) => {
+    setFilterStartDate(date);
+  };
+
+  const handleFilterEndDate = (date) => {
+    setFilterEndDate(date);
   };
 
   const handleDeleteRow = (id) => {
@@ -136,7 +157,7 @@ export default function InvoiceList() {
   const handleViewRow = (id) => {
     navigate(PATH_DASHBOARD.invoice.view(id));
   };
-  
+
   const dataFiltered = applySortFilter({
     tableData: invoice,
     comparator: getComparator(order, orderBy),
@@ -170,26 +191,36 @@ export default function InvoiceList() {
     const getData = async () => {
       try {
         const response = await axios.get('/api/v1/stores/all');
-        setStores([{platform: 'ALL', name: 'STORE'}, ...response.data]);
+        setStores([{ platform: 'ALL', name: 'STORE' }, ...response.data]);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getData()
+    };
+    getData();
   }, []);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`/api/v1/orders?size=500&sort=createdAt%2Cdesc&storeId=${filterService || ''}`);
+        const response = await axios.get(
+          `/api/v1/orders?`
+            .concat(`size=${rowsPerPage}`)
+            .concat(`&page=${page}`)
+            .concat(`&orderId=${filterName || ''}`)
+            .concat(`&sort=createdAt%2Cdesc`)
+            .concat(`&storeId=${filterService || ''}`)
+            .concat(`&startDate=${filterStartDate ? fInstant(filterStartDate) : ''}`)
+            .concat(`&endDate=${filterEndDate ? fInstant(filterEndDate) : ''}`)
+        );
         setInvoice(response.data.content);
         setTableData(response.data.content);
+        setTotalElement(response.data.totalElements);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    getData()
-  }, [filterService])
+    };
+    getData();
+  }, [filterService, rowsPerPage, page, pressEnter, filterStartDate, filterEndDate]);
 
   return (
     <Page title="Invoice: List">
@@ -261,13 +292,10 @@ export default function InvoiceList() {
             filterStartDate={filterStartDate}
             filterEndDate={filterEndDate}
             onFilterName={handleFilterName}
+            onPressEnter={handlePressEnter}
             onFilterService={handleFilterService}
-            onFilterStartDate={(newValue) => {
-              setFilterStartDate(newValue);
-            }}
-            onFilterEndDate={(newValue) => {
-              setFilterEndDate(newValue);
-            }}
+            onFilterStartDate={handleFilterStartDate}
+            onFilterEndDate={handleFilterEndDate}
             optionsService={stores.map((item) => `${item.platform} - ${item.name}`)}
           />
 
@@ -331,7 +359,7 @@ export default function InvoiceList() {
                 />
 
                 <TableBody>
-                  {dataFiltered.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  {invoice.map((row) => (
                     <InvoiceTableRow
                       key={row.id}
                       row={row}
@@ -355,7 +383,7 @@ export default function InvoiceList() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={dataFiltered.length}
+              count={totalElement}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={onChangePage}
@@ -385,7 +413,6 @@ function applySortFilter({
   filterStartDate,
   filterEndDate,
 }) {
-
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {

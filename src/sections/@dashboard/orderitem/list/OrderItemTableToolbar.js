@@ -5,56 +5,48 @@ import DatePicker from '@mui/lab/DatePicker';
 import Iconify from '../../../../components/Iconify';
 import useLocales from '../../../../hooks/useLocales';
 
-const INPUT_WIDTH = 160;
+// ----------------------------------------------------------------------
 
-InvoiceTableToolbar.propTypes = {
+OrderItemTableToolbar.propTypes = {
   filterName: PropTypes.string,
-  filterService: PropTypes.string,
+  onFilterName: PropTypes.func,
+  filterPlatform: PropTypes.string,
+  optionsPlatform: PropTypes.object,
+  onFilterPlatform: PropTypes.arrayOf(PropTypes.string),
   filterEndDate: PropTypes.instanceOf(Date),
   filterStartDate: PropTypes.instanceOf(Date),
-  onFilterName: PropTypes.func,
-  onPressEnter: PropTypes.func,
   onFilterEndDate: PropTypes.func,
-  onFilterService: PropTypes.func,
   onFilterStartDate: PropTypes.func,
-  optionsService: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default function InvoiceTableToolbar({
-  optionsService,
-  filterStartDate,
-  filterEndDate,
-  filterName,
-  filterService,
-  onFilterName,
-  onPressEnter,
-  onFilterService,
-  onFilterStartDate,
-  onFilterEndDate,
-}) {
+const INPUT_WIDTH = 160;
+
+export default function OrderItemTableToolbar({ filterName, onFilterName,
+                                                filterPlatform, onFilterPlatform, optionsPlatform,
+                                                filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate}) {
   const { translate } = useLocales();
   return (
-    <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 3 }}>
+    <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
       <TextField
         fullWidth
         select
-        label="Filter Stores"
-        value={filterService}
-        onChange={onFilterService}
+        label="Platform"
+        value={filterPlatform}
+        onChange={onFilterPlatform}
         SelectProps={{
           MenuProps: {
             sx: { '& .MuiPaper-root': { maxHeight: 260 } },
           },
         }}
         sx={{
-          maxWidth: { md: INPUT_WIDTH },
+          maxWidth: { sm: 240 },
           textTransform: 'capitalize',
         }}
       >
-        {optionsService.map((option) => (
+        {optionsPlatform.map((key) => (
           <MenuItem
-            key={option}
-            value={option}
+            key={key}
+            value={key}
             sx={{
               mx: 1,
               my: 0.5,
@@ -63,7 +55,7 @@ export default function InvoiceTableToolbar({
               textTransform: 'capitalize',
             }}
           >
-            {option}
+            {key}
           </MenuItem>
         ))}
       </TextField>
@@ -101,15 +93,8 @@ export default function InvoiceTableToolbar({
       <TextField
         fullWidth
         value={filterName}
-        onChange={(event) => {
-          onFilterName(event.target.value);
-        }}
-        onKeyPress={(event) => {
-          if (event.code === 'Enter') {
-            onPressEnter();
-          }
-        }}
-        placeholder="Search by order id..."
+        onChange={(event) => onFilterName(event.target.value)}
+        placeholder="Search user..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

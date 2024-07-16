@@ -102,5 +102,5 @@ export function getComparator(order, orderBy) {
 }
 
 export function emptyRows(page, rowsPerPage, arrayLength) {
-  return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - arrayLength) : 0;
+  return page > 0 ? Math.max(0, rowsPerPage - arrayLength) : 0;
 }
