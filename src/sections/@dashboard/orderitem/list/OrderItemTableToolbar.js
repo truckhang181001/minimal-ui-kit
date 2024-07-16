@@ -8,22 +8,29 @@ import useLocales from '../../../../hooks/useLocales';
 // ----------------------------------------------------------------------
 
 OrderItemTableToolbar.propTypes = {
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
   filterPlatform: PropTypes.string,
-  optionsPlatform: PropTypes.object,
-  onFilterPlatform: PropTypes.arrayOf(PropTypes.string),
+  optionsPlatform: PropTypes.arrayOf(PropTypes.string),
+  onFilterPlatform: PropTypes.func,
+  filterStore: PropTypes.string,
+  optionsStore: PropTypes.arrayOf(PropTypes.string),
+  onFilterStore: PropTypes.func,
   filterEndDate: PropTypes.instanceOf(Date),
   filterStartDate: PropTypes.instanceOf(Date),
   onFilterEndDate: PropTypes.func,
   onFilterStartDate: PropTypes.func,
+  filterPromo: PropTypes.string,
+  onFilterPromo: PropTypes.func,
+  optionsPromo: PropTypes.arrayOf(PropTypes.string),
 };
 
 const INPUT_WIDTH = 160;
 
-export default function OrderItemTableToolbar({ filterName, onFilterName,
+export default function OrderItemTableToolbar({
                                                 filterPlatform, onFilterPlatform, optionsPlatform,
-                                                filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate}) {
+                                                filterStore, optionsStore, onFilterStore,
+                                                filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
+                                                filterPromo, onFilterPromo, optionsPromo
+                                              }) {
   const { translate } = useLocales();
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
@@ -44,6 +51,39 @@ export default function OrderItemTableToolbar({ filterName, onFilterName,
         }}
       >
         {optionsPlatform.map((key) => (
+          <MenuItem
+            key={key}
+            value={key}
+            sx={{
+              mx: 1,
+              my: 0.5,
+              borderRadius: 0.75,
+              typography: 'body2',
+              textTransform: 'capitalize',
+            }}
+          >
+            {key}
+          </MenuItem>
+        ))}
+      </TextField>
+
+      <TextField
+        fullWidth
+        select
+        label="Store"
+        value={filterStore}
+        onChange={onFilterStore}
+        SelectProps={{
+          MenuProps: {
+            sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+          },
+        }}
+        sx={{
+          maxWidth: { sm: 240 },
+          textTransform: 'capitalize',
+        }}
+      >
+        {optionsStore.map((key) => (
           <MenuItem
             key={key}
             value={key}
@@ -92,17 +132,36 @@ export default function OrderItemTableToolbar({ filterName, onFilterName,
 
       <TextField
         fullWidth
-        value={filterName}
-        onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search user..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon={'eva:search-fill'} sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          ),
+        select
+        label="Is Promo Included"
+        value={filterPromo}
+        onChange={onFilterPromo}
+        SelectProps={{
+          MenuProps: {
+            sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+          },
         }}
-      />
+        sx={{
+          maxWidth: { sm: 240 },
+          textTransform: 'capitalize',
+        }}
+      >
+        {optionsPromo.map((key) => (
+          <MenuItem
+            key={key}
+            value={key}
+            sx={{
+              mx: 1,
+              my: 0.5,
+              borderRadius: 0.75,
+              typography: 'body2',
+              textTransform: 'capitalize',
+            }}
+          >
+            {key}
+          </MenuItem>
+        ))}
+      </TextField>
     </Stack>
   );
 }

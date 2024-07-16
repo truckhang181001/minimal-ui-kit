@@ -47,6 +47,14 @@ const PLATFORM_OPTIONS = new Map([
   ['SHOPEE', 'SHOPEE'],
 ]);
 
+const STORE_OPTIONS = new Map([['ALL', null]]);
+
+const PROMO_OPTIONS = new Map([
+  ['ALL', null],
+  ['NOT PROMO INCLUDED', false],
+  ['ONLY PROMO INCLUDED', true]
+]);
+
 const START_DATE = new Date();
 START_DATE.setMonth(START_DATE.getMonth() - 1);
 
@@ -80,7 +88,7 @@ export default function UserList() {
     onChangeDense,
     onChangePage,
     onChangeRowsPerPage,
-  } = useTable();
+  } = useTable({defaultOrderBy: 'totalGrossSales', defaultOrder: 'desc'});
 
   const { themeStretch } = useSettings();
 
@@ -91,6 +99,10 @@ export default function UserList() {
   const [filterName, setFilterName] = useState('');
 
   const [filterPlatform, setFilterPlatform] = useState('ALL');
+
+  const [filterStore, setFilterStore] = useState('ALL');
+
+  const [filterPromo, setFilterPromo] = useState('ALL');
 
   const [filterStartDate, setFilterStartDate] = useState(START_DATE);
 
@@ -104,7 +116,16 @@ export default function UserList() {
 
   const handleFilterPlatform = (event) => {
     setFilterPlatform(event.target.value);
+    setFilterStore('ALL')
   };
+
+  const handleFilterStore = (event) => {
+    setFilterStore(event.target.value);
+  }
+
+  const handleFilterPromo = (event) => {
+    setFilterPromo(event.target.value);
+  }
 
   const handleFilterStartDate = (date) => {
     setFilterStartDate(date);
@@ -143,8 +164,25 @@ export default function UserList() {
   useEffect(() => {
     const getData = async () => {
       try {
+        const response = await axios.get('/api/v1/stores/all');
+        response.data.forEach((store) => {
+          STORE_OPTIONS.set(`${store.platform} - ${store.name}`, {id: store.id, platform: store.platform});
+        });
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
         const response = await axios.get(`/api/v1/order-items/insight?`
           .concat(`&platform=${PLATFORM_OPTIONS.get(filterPlatform) || ''}`)
+          .concat(`&storeId=${STORE_OPTIONS.get(filterStore) ? STORE_OPTIONS.get(filterStore).id : ''}`)
+          .concat(`&isPromoIncluded=${PROMO_OPTIONS.get(filterPromo) === null ? '' : PROMO_OPTIONS.get(filterPromo)}`)
           .concat(`&startDate=${fInstant(filterStartDate)}`)
           .concat(`&endDate=${fInstant(filterEndDate)}`),
         );
@@ -154,7 +192,7 @@ export default function UserList() {
       }
     };
     getData();
-  }, [filterPlatform, filterStartDate, filterEndDate]);
+  }, [filterPlatform, filterStore, filterPromo, filterStartDate, filterEndDate]);
 
   return (
     <Page title="Product: Insight Report">
@@ -193,6 +231,12 @@ export default function UserList() {
             onFilterStartDate={handleFilterStartDate}
             filterEndDate={filterEndDate}
             onFilterEndDate={handleFilterEndDate}
+            filterStore={filterStore}
+            onFilterStore={handleFilterStore}
+            optionsStore={getStoreOptionsByPlatform(filterPlatform, PLATFORM_OPTIONS, STORE_OPTIONS)}
+            filterPromo={filterPromo}
+            onFilterPromo={handleFilterPromo}
+            optionsPromo={Array.from(PROMO_OPTIONS.keys())}
           />
 
           <Scrollbar>
@@ -201,11 +245,11 @@ export default function UserList() {
                 <TableSelectedActions
                   dense={dense}
                   numSelected={selected.length}
-                  rowCount={dataFiltered.length}
+                  rowCount={dataFiltered.slice(0, rowsPerPage).length}
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      dataFiltered.map((row) => row.id),
+                      dataFiltered.slice(0, rowsPerPage).map((row) => row.id),
                     )
                   }
                   actions={
@@ -223,19 +267,19 @@ export default function UserList() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={dataFiltered.length}
+                  rowCount={dataFiltered.slice(0, rowsPerPage).length}
                   numSelected={selected.length}
                   onSort={onSort}
                   onSelectAllRows={(checked) =>
                     onSelectAllRows(
                       checked,
-                      dataFiltered.map((row) => row.id),
+                      dataFiltered.slice(0, rowsPerPage).map((row) => row.id),
                     )
                   }
                 />
 
                 <TableBody>
-                  {dataFiltered.map((row) => (
+                  {dataFiltered.slice(0, rowsPerPage).map((row) => (
                     <OrderItemTableRow
                       key={row.id}
                       row={row}
@@ -246,13 +290,31 @@ export default function UserList() {
                     />
                   ))}
 
-                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)} />
+                  <TableEmptyRows height={denseHeight} emptyRows={emptyRows(page, rowsPerPage, dataFiltered.slice(0, rowsPerPage).length)} />
 
                   <TableNoData isNotFound={isNotFound} />
                 </TableBody>
               </Table>
             </TableContainer>
           </Scrollbar>
+
+          <Box sx={{ position: 'relative' }}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25, 50]}
+              component="div"
+              count={rowsPerPage < dataFiltered.length ? rowsPerPage : dataFiltered.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={onChangePage}
+              onRowsPerPageChange={onChangeRowsPerPage}
+            />
+
+            <FormControlLabel
+              control={<Switch checked={dense} onChange={onChangeDense} />}
+              label="Dense"
+              sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
+            />
+          </Box>
         </Card>
       </Container>
     </Page>
@@ -276,4 +338,23 @@ function applySortFilter({ tableData, comparator, filterName }) {
   }
 
   return tableData;
+}
+
+function getStoreOptionsByPlatform(platform, platformOptions, storeOptions) {
+
+  const filterPlatform = platformOptions.get(platform)
+
+  if (!filterPlatform) {
+    console.log(Array.from(storeOptions.keys()));
+    return Array.from(storeOptions.keys());
+  }
+
+  const filtered = ['ALL'];
+  storeOptions.forEach((value, key) => {
+    if (value && value.platform === filterPlatform) {
+      filtered.push(key);
+    }
+  })
+
+  return filtered;
 }
