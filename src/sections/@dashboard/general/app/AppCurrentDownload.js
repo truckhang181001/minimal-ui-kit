@@ -1,5 +1,6 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
+import PropTypes from 'prop-types';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Card, CardHeader } from '@mui/material';
@@ -7,7 +8,6 @@ import { Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../../components/chart';
-
 // ----------------------------------------------------------------------
 
 const CHART_HEIGHT = 392;
@@ -33,7 +33,13 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 const CHART_DATA = [12244, 53345, 44313, 78343];
 
-export default function AppCurrentDownload() {
+AppCurrentDownload.prototype = {
+  data: PropTypes.array,
+  chartTitle: PropTypes.string
+}
+
+export default function AppCurrentDownload({title, data}) {
+
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -75,11 +81,13 @@ export default function AppCurrentDownload() {
     },
   });
 
+  chartOptions.labels = data.map(item => item.name)
+
   return (
     <Card>
-      <CardHeader title="Current Download" />
+      <CardHeader title={title || 'Circle Chart'} />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} height={280} />
+        <ReactApexChart type="donut" series={data ? data.map(item => item.value) : [0]} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

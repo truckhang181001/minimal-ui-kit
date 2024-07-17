@@ -91,8 +91,9 @@ export const PATH_DASHBOARD = {
   map: {
     root: path(ROOTS_DASHBOARD, '/map')
   },
-  orderItem: {
-    root: path(ROOTS_DASHBOARD, '/order-item')
+  product: {
+    root: path(ROOTS_DASHBOARD, '/product/sales-report'),
+    feedback: path(ROOTS_DASHBOARD, '/product/feedback-report'),
   }
 };
 

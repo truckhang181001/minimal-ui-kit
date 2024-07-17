@@ -85,8 +85,15 @@ const navConfig = (translate) => [
 
       {
         title: "Product",
-        path: PATH_DASHBOARD.orderItem.root,
-        icon: ICONS.cart
+        path: PATH_DASHBOARD.product.root,
+        icon: ICONS.cart,
+        children: [
+          { title: translate('Sales Report'), path: PATH_DASHBOARD.product.root },
+          { title: translate('Feedback Report'), path: PATH_DASHBOARD.product.feedback },
+          // { title: translate('details'), path: PATH_DASHBOARD.invoice.demoView },
+          // { title: translate('create'), path: PATH_DASHBOARD.invoice.new },
+          // { title: translate('edit'), path: PATH_DASHBOARD.invoice.demoEdit },
+        ],
       },
 
       // // BLOG

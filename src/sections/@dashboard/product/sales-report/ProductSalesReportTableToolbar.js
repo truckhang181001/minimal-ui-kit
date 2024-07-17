@@ -7,7 +7,7 @@ import useLocales from '../../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
-UserTableToolbar.propTypes = {
+ProductSalesReportTableToolbar.propTypes = {
   filterPlatform: PropTypes.string,
   optionsPlatform: PropTypes.arrayOf(PropTypes.string),
   onFilterPlatform: PropTypes.func,
@@ -18,15 +18,19 @@ UserTableToolbar.propTypes = {
   filterStartDate: PropTypes.instanceOf(Date),
   onFilterEndDate: PropTypes.func,
   onFilterStartDate: PropTypes.func,
+  filterPromo: PropTypes.string,
+  onFilterPromo: PropTypes.func,
+  optionsPromo: PropTypes.arrayOf(PropTypes.string),
 };
 
 const INPUT_WIDTH = 160;
 
-export default function UserTableToolbar({
-                                                         filterPlatform, onFilterPlatform, optionsPlatform,
-                                                         filterStore, optionsStore, onFilterStore,
-                                                         filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
-                                                       }) {
+export default function ProductSalesReportTableToolbar({
+                                                filterPlatform, onFilterPlatform, optionsPlatform,
+                                                filterStore, optionsStore, onFilterStore,
+                                                filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
+                                                filterPromo, onFilterPromo, optionsPromo
+                                              }) {
   const { translate } = useLocales();
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
@@ -125,6 +129,39 @@ export default function UserTableToolbar({
           />
         )}
       />
+
+      <TextField
+        fullWidth
+        select
+        label="Is Promo Included"
+        value={filterPromo}
+        onChange={onFilterPromo}
+        SelectProps={{
+          MenuProps: {
+            sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+          },
+        }}
+        sx={{
+          maxWidth: { sm: 240 },
+          textTransform: 'capitalize',
+        }}
+      >
+        {optionsPromo.map((key) => (
+          <MenuItem
+            key={key}
+            value={key}
+            sx={{
+              mx: 1,
+              my: 0.5,
+              borderRadius: 0.75,
+              typography: 'body2',
+              textTransform: 'capitalize',
+            }}
+          >
+            {key}
+          </MenuItem>
+        ))}
+      </TextField>
     </Stack>
   );
 }
