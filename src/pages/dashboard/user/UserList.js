@@ -91,6 +91,8 @@ export default function UserList() {
 
   const [eaterTierSummary, setEaterTierSummary] = useState([])
 
+  const [eaterTierGrowth, setEaterTierGrowth] = useState({ keys: [], data: [] })
+
   const [filterName, setFilterName] = useState('');
 
   const [filterPlatform, setFilterPlatform] = useState('ALL');
@@ -182,6 +184,23 @@ export default function UserList() {
     getData();
   }, [filterPlatform, filterStore, filterStartDate, filterEndDate]);
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/eaters/tier/growth?`
+          .concat(`&startDate=${fInstant(filterStartDate)}`)
+          .concat(`&endDate=${fInstant(filterEndDate, true)}`)
+          .concat(`&platform=${PLATFORM_OPTIONS.get(filterPlatform) || ''}`)
+          .concat(`&storeId=${STORE_OPTIONS.get(filterStore) ? STORE_OPTIONS.get(filterStore).id : ''}`)
+        );
+        setEaterTierGrowth(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, [filterPlatform, filterStore, filterStartDate, filterEndDate]);
+
   return (
     <Page title="Product: Insight Report">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -230,7 +249,7 @@ export default function UserList() {
             </Grid>
 
             <Grid item xs={12} md={6} lg={8}>
-              <UserTierLineChart />
+              <UserTierLineChart data={eaterTierGrowth.data} categories={eaterTierGrowth.keys} />
             </Grid>
           </Grid>
 
