@@ -1,32 +1,30 @@
 import { paramCase } from 'change-case';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Box,
-  Tab,
-  Tabs,
   Card,
-  Table,
-  Switch,
-  Button,
-  Tooltip,
-  Divider,
-  TableBody,
   Container,
+  Divider,
+  FormControlLabel,
+  Grid,
   IconButton,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
   TableContainer,
   TablePagination,
-  FormControlLabel, Grid,
+  Tabs,
+  Tooltip,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useTabs from '../../../hooks/useTabs';
 import useSettings from '../../../hooks/useSettings';
-import useTable, { getComparator, emptyRows } from '../../../hooks/useTable';
-import useLocales from '../../../hooks/useLocales';
+import useTable, { emptyRows, getComparator } from '../../../hooks/useTable';
 // utils
 import axios from '../../../utils/axios';
 // components
@@ -36,10 +34,8 @@ import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
 // sections
-import { fDateTime, fInstant } from '../../../utils/formatTime';
-import { UserTableRow, UserTableToolbar } from '../../../sections/@dashboard/user/list';
-import { EcommerceSaleByGender, EcommerceYearlySales } from '../../../sections/@dashboard/general/e-commerce';
-import { AppCurrentDownload, AppWidgetSummary } from '../../../sections/@dashboard/general/app';
+import { fInstant } from '../../../utils/formatTime';
+import { UserTableRow, UserTableToolbar, UserTierLineChart, UserTierCircleChart } from '../../../sections/@dashboard/user/list';
 
 // ----------------------------------------------------------------------
 
@@ -230,11 +226,11 @@ export default function UserList() {
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
-              <AppCurrentDownload title={"Eater Tier Summary"} data={eaterTierSummary} />
+              <UserTierCircleChart title={"Eater Tier Summary"} data={eaterTierSummary} />
             </Grid>
 
             <Grid item xs={12} md={6} lg={8}>
-              <EcommerceYearlySales />
+              <UserTierLineChart />
             </Grid>
           </Grid>
 
