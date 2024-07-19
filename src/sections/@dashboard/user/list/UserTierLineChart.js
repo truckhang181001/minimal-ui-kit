@@ -1,7 +1,7 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
 // @mui
-import { Card, CardHeader } from '@mui/material';
+import { Box, Card, CardHeader } from '@mui/material';
 //
 import { BaseOptionChart } from '../../../../components/chart';
 import { fDayMoth } from '../../../../utils/formatTime';
@@ -20,12 +20,12 @@ const CHART_DATA = [
 
 export default function UserTierLineChart({ data, categories }) {
 
-  categories = categories.map(category => fDayMoth(category))
+  categories = categories.map(category => fDayMoth(category));
 
   const chartOptions = merge(BaseOptionChart(), {
     legend: { position: 'top', horizontalAlign: 'right' },
     xaxis: {
-      categories
+      categories,
     },
   });
 
@@ -36,9 +36,11 @@ export default function UserTierLineChart({ data, categories }) {
         subheader="(+43%) than last year"
       />
 
-      <ReactApexChart type="area" series={data.map(item => {
-        return {name: item.name, data: item.values}
-      })} options={chartOptions} height={364} />
+      <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
+        <ReactApexChart type="area" series={data.map(item => {
+          return { name: item.name, data: item.values };
+        })} options={chartOptions} height={364} />
+      </Box>
 
     </Card>
   );

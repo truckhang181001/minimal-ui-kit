@@ -111,7 +111,12 @@ export default function Router() {
             { path: 'new', element: <BlogNewPost /> },
           ],
         },
-        { path: 'map', element: <Map /> },
+        { path: 'map',
+          children: [
+            { path: 'visualize', element: <Map /> },
+            { path: 'report', element: <MapReport /> }
+          ]
+        },
         {
           path: 'product',
           children: [
@@ -189,6 +194,7 @@ const ProductSalesReport = Loadable(lazy(() => import('../pages/dashboard/produc
 const ProductFeedbackReport = Loadable(lazy(() => import('../pages/dashboard/product/ProductFeedbackReport')));
 
 const Map = Loadable(lazy(() => import('../pages/dashboard/map/Map')))
+const MapReport = Loadable(lazy(() => import('../pages/dashboard/map/ProductPerDistrictReport')))
 
 // APP
 // const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));

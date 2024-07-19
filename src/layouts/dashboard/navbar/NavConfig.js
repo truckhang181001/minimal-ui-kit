@@ -80,7 +80,11 @@ const navConfig = (translate) => [
       {
         title: "Map",
         path: PATH_DASHBOARD.map.root,
-        icon: ICONS.analytics
+        icon: ICONS.analytics,
+        children: [
+          { title: translate('Visualize'), path: PATH_DASHBOARD.map.root },
+          { title: translate('Report'), path: PATH_DASHBOARD.map.report }
+        ]
       },
 
       {

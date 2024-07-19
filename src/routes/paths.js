@@ -89,7 +89,8 @@ export const PATH_DASHBOARD = {
     demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
   map: {
-    root: path(ROOTS_DASHBOARD, '/map')
+    root: path(ROOTS_DASHBOARD, '/map/visualize'),
+    report: path(ROOTS_DASHBOARD, '/map/report')
   },
   product: {
     root: path(ROOTS_DASHBOARD, '/product/sales-report'),
