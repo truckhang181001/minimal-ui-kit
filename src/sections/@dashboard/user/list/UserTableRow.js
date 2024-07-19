@@ -24,7 +24,7 @@ UserTableRow.propTypes = {
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, value } = row;
+  const { name, value, totalOrder, totalOrderItem, grossSales, netSales } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -48,7 +48,19 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         </Label>
       </TableCell>
 
-      <TableCell align="left">{value}</TableCell>
+      <TableCell align="left">{fNumber(value)}</TableCell>
+
+      <TableCell align="left">{fNumber(grossSales)}</TableCell>
+
+      <TableCell align="left">{fNumber(netSales)}</TableCell>
+
+      <TableCell align="left">{fNumber(totalOrderItem/totalOrder)}</TableCell>
+
+      <TableCell align="left">{fNumber(grossSales/value)}</TableCell>
+
+      <TableCell align="left">{fNumber(grossSales/totalOrder)}</TableCell>
+
+      <TableCell align="left">{fNumber(totalOrder)}</TableCell>
 
     </TableRow>
   );

@@ -54,12 +54,13 @@ START_DATE.setMonth(START_DATE.getMonth() - 1);
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
-  { id: 'totalGrossSales', label: 'Gross Sales', align: 'left' },
-  { id: 'previousTotalGrossSales', label: 'Previous Gross Sales', align: 'left' },
-  { id: 'totalNetSales', label: 'Net Sales', align: 'left' },
-  { id: 'previousTotalNetSales', label: 'Previous Net Sales', align: 'left' },
-  { id: 'totalUnitsSold', label: 'Units Sold', align: 'left' },
-  { id: 'previousTotalUnitsSold', label: 'Previous Unit Sold', align: 'left' },
+  { id: 'value', label: 'Total User', align: 'left' },
+  { id: 'grossSales', label: 'Gross Sales', align: 'left' },
+  { id: 'netSales', label: 'Net Sales', align: 'left' },
+  { id: 'aoit', label: 'Average Order Item', align: 'left' },
+  { id: 'acv', label: 'ACV', align: 'left' },
+  { id: 'aov', label: 'AOV', align: 'left' },
+  { id: 'totalOrder', label: 'Total Order', align: 'left' },
   { id: '' },
 ];
 
@@ -177,6 +178,7 @@ export default function UserList() {
           .concat(`&endDate=${fInstant(filterEndDate, true)}`),
         );
         setEaterTierSummary(response.data.summaries);
+        setTableData(response.data.summaries);
       } catch (error) {
         console.log(error);
       }
@@ -202,10 +204,10 @@ export default function UserList() {
   }, [filterPlatform, filterStore, filterStartDate, filterEndDate]);
 
   return (
-    <Page title="Product: Insight Report">
+    <Page title="User: Insight Report">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Product: Insight Report"
+          heading="User: Insight Report"
           links={[
             { name: 'Product' },
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
