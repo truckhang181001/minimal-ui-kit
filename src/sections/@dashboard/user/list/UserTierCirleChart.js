@@ -33,12 +33,12 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 const CHART_DATA = [12244, 53345, 44313, 78343];
 
-AppCurrentDownload.prototype = {
+UserTierCirleChart.prototype = {
   data: PropTypes.array,
   chartTitle: PropTypes.string
 }
 
-export default function AppCurrentDownload({title, data}) {
+export default function UserTierCirleChart({title, data}) {
 
   const theme = useTheme();
 

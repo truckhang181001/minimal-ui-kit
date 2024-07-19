@@ -1,6 +1,5 @@
 import merge from 'lodash/merge';
 import ReactApexChart from 'react-apexcharts';
-import PropTypes from 'prop-types';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
 import { Card, CardHeader } from '@mui/material';
@@ -8,9 +7,10 @@ import { Card, CardHeader } from '@mui/material';
 import { fNumber } from '../../../../utils/formatNumber';
 //
 import { BaseOptionChart } from '../../../../components/chart';
+
 // ----------------------------------------------------------------------
 
-const CHART_HEIGHT = 392;
+const CHART_HEIGHT = 372;
 const LEGEND_HEIGHT = 72;
 
 const ChartWrapperStyle = styled('div')(({ theme }) => ({
@@ -31,27 +31,22 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [12244, 53345, 44313, 78343];
+const CHART_DATA = [4344, 5435, 1443, 4443];
 
-AppCurrentDownload.prototype = {
-  data: PropTypes.array,
-  chartTitle: PropTypes.string
-}
-
-export default function AppCurrentDownload({title, data}) {
-
+export default function AnalyticsCurrentVisits({labels, data}) {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: [
-      theme.palette.primary.lighter,
-      theme.palette.primary.light,
       theme.palette.primary.main,
-      theme.palette.primary.dark,
+      theme.palette.chart.blue[0],
+      theme.palette.chart.violet[0],
+      theme.palette.chart.yellow[0],
     ],
-    labels: ['Mac', 'Window', 'iOS', 'Android'],
+    labels,
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
+    dataLabels: { enabled: true, dropShadow: { enabled: false } },
     tooltip: {
       fillSeriesColor: false,
       y: {
@@ -62,32 +57,15 @@ export default function AppCurrentDownload({title, data}) {
       },
     },
     plotOptions: {
-      pie: {
-        donut: {
-          size: '90%',
-          labels: {
-            value: {
-              formatter: (val) => fNumber(val),
-            },
-            total: {
-              formatter: (w) => {
-                const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                return fNumber(sum);
-              },
-            },
-          },
-        },
-      },
+      pie: { donut: { labels: { show: false } } },
     },
   });
 
-  chartOptions.labels = data.map(item => item.name)
-
   return (
     <Card>
-      <CardHeader title={title || 'Circle Chart'} />
+      <CardHeader title="Percentage Report" />
       <ChartWrapperStyle dir="ltr">
-        <ReactApexChart type="donut" series={data ? data.map(item => item.value) : [0]} options={chartOptions} height={280} />
+        <ReactApexChart type="pie" series={data} options={chartOptions} height={280} />
       </ChartWrapperStyle>
     </Card>
   );

@@ -2,13 +2,14 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
+import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem, Stack } from '@mui/material';
 import createAvatar from '../../../../utils/createAvatar';
 import { fDateTime } from '../../../../utils/formatTime';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import { TableMoreMenu } from '../../../../components/table';
+import { fNumber } from '../../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ UserTableRow.propTypes = {
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const theme = useTheme();
 
-  const { name, mobileNumber, totalPayment, lastOrderedAt, eaterTier } = row;
+  const { name, value, totalOrder, totalOrderItem, grossSales, netSales } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
 
@@ -41,75 +42,26 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         <Checkbox checked={selected} onClick={onSelectRow} />
       </TableCell>
 
-      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={name || "-"} color={createAvatar(name || "-").color} sx={{ mr: 2 }}>
-          {createAvatar(name || "-").name}
-        </Avatar>
-        <Typography variant="subtitle2" noWrap>
+      <TableCell align="left">
+        <Label variant="filled" color="primary">
           {name}
-        </Typography>
-      </TableCell>
-
-      <TableCell align="left">{mobileNumber}</TableCell>
-
-      <TableCell align="left">{totalPayment}</TableCell>
-
-      <TableCell align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={(eaterTier === 'banned' && 'error') || 'success'}
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {eaterTier}
         </Label>
       </TableCell>
 
-      <TableCell align="center">{fDateTime(lastOrderedAt)}</TableCell>
+      <TableCell align="left">{fNumber(value)}</TableCell>
 
-{/*
-      <TableCell align="center">
-        <Iconify
-          icon={isVerified ? 'eva:checkmark-circle-fill' : 'eva:clock-outline'}
-          sx={{
-            width: 20,
-            height: 20,
-            color: 'success.main',
-            ...(!isVerified && { color: 'warning.main' }),
-          }}
-        />
-      </TableCell>
-*/}
+      <TableCell align="left">{fNumber(grossSales)}</TableCell>
 
-      <TableCell align="right">
-        <TableMoreMenu
-          open={openMenu}
-          onOpen={handleOpenMenu}
-          onClose={handleCloseMenu}
-          actions={
-            <>
-              <MenuItem
-                onClick={() => {
-                  onDeleteRow();
-                  handleCloseMenu();
-                }}
-                sx={{ color: 'error.main' }}
-              >
-                <Iconify icon={'eva:trash-2-outline'} />
-                Delete
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  onEditRow();
-                  handleCloseMenu();
-                }}
-              >
-                <Iconify icon={'eva:edit-fill'} />
-                Edit
-              </MenuItem>
-            </>
-          }
-        />
-      </TableCell>
+      <TableCell align="left">{fNumber(netSales)}</TableCell>
+
+      <TableCell align="left">{fNumber(totalOrderItem/totalOrder)}</TableCell>
+
+      <TableCell align="left">{fNumber(grossSales/value)}</TableCell>
+
+      <TableCell align="left">{fNumber(grossSales/totalOrder)}</TableCell>
+
+      <TableCell align="left">{fNumber(totalOrder)}</TableCell>
+
     </TableRow>
   );
 }

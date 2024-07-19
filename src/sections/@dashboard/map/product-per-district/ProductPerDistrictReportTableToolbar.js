@@ -7,7 +7,7 @@ import useLocales from '../../../../hooks/useLocales';
 
 // ----------------------------------------------------------------------
 
-UserTableToolbar.propTypes = {
+ProductPerDistrictReportTableToolbar.propTypes = {
   filterPlatform: PropTypes.string,
   optionsPlatform: PropTypes.arrayOf(PropTypes.string),
   onFilterPlatform: PropTypes.func,
@@ -17,16 +17,16 @@ UserTableToolbar.propTypes = {
   filterEndDate: PropTypes.instanceOf(Date),
   filterStartDate: PropTypes.instanceOf(Date),
   onFilterEndDate: PropTypes.func,
-  onFilterStartDate: PropTypes.func,
+  onFilterStartDate: PropTypes.func
 };
 
 const INPUT_WIDTH = 160;
 
-export default function UserTableToolbar({
-                                                         filterPlatform, onFilterPlatform, optionsPlatform,
-                                                         filterStore, optionsStore, onFilterStore,
-                                                         filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
-                                                       }) {
+export default function ProductPerDistrictReportTableToolbar({
+                                                filterPlatform, onFilterPlatform, optionsPlatform,
+                                                filterStore, optionsStore, onFilterStore,
+                                                filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
+                                              }) {
   const { translate } = useLocales();
   return (
     <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ py: 2.5, px: 3 }}>
