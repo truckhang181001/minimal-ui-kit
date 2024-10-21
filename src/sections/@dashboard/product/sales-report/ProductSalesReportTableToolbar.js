@@ -14,6 +14,9 @@ ProductSalesReportTableToolbar.propTypes = {
   filterStore: PropTypes.string,
   optionsStore: PropTypes.arrayOf(PropTypes.string),
   onFilterStore: PropTypes.func,
+  filterEaterTier: PropTypes.string,
+  optionsEaterTier: PropTypes.arrayOf(PropTypes.string),
+  onFilterEaterTier: PropTypes.func,
   filterEndDate: PropTypes.instanceOf(Date),
   filterStartDate: PropTypes.instanceOf(Date),
   onFilterEndDate: PropTypes.func,
@@ -28,6 +31,7 @@ const INPUT_WIDTH = 160;
 export default function ProductSalesReportTableToolbar({
                                                 filterPlatform, onFilterPlatform, optionsPlatform,
                                                 filterStore, optionsStore, onFilterStore,
+                                                filterEaterTier, optionsEaterTier, onFilterEaterTier,
                                                 filterEndDate, filterStartDate, onFilterEndDate, onFilterStartDate,
                                                 filterPromo, onFilterPromo, optionsPromo
                                               }) {
@@ -129,6 +133,39 @@ export default function ProductSalesReportTableToolbar({
           />
         )}
       />
+
+      <TextField
+        fullWidth
+        select
+        label="Eater Tier"
+        value={filterEaterTier}
+        onChange={onFilterEaterTier}
+        SelectProps={{
+          MenuProps: {
+            sx: { '& .MuiPaper-root': { maxHeight: 260 } },
+          },
+        }}
+        sx={{
+          maxWidth: { sm: 240 },
+          textTransform: 'capitalize',
+        }}
+      >
+        {optionsEaterTier.map((key) => (
+          <MenuItem
+            key={key}
+            value={key}
+            sx={{
+              mx: 1,
+              my: 0.5,
+              borderRadius: 0.75,
+              typography: 'body2',
+              textTransform: 'capitalize',
+            }}
+          >
+            {key}
+          </MenuItem>
+        ))}
+      </TextField>
 
       <TextField
         fullWidth

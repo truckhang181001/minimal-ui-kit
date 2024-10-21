@@ -83,7 +83,8 @@ const navConfig = (translate) => [
         icon: ICONS.analytics,
         children: [
           { title: translate('Visualize'), path: PATH_DASHBOARD.map.root },
-          { title: translate('Report'), path: PATH_DASHBOARD.map.report }
+          { title: translate('Report'), path: PATH_DASHBOARD.map.report },
+          { title: translate('Roaming'), path: PATH_DASHBOARD.map.roaming }
         ]
       },
 

@@ -90,7 +90,8 @@ export const PATH_DASHBOARD = {
   },
   map: {
     root: path(ROOTS_DASHBOARD, '/map/visualize'),
-    report: path(ROOTS_DASHBOARD, '/map/report')
+    report: path(ROOTS_DASHBOARD, '/map/report'),
+    roaming: path(ROOTS_DASHBOARD, '/map/roaming')
   },
   product: {
     root: path(ROOTS_DASHBOARD, '/product/sales-report'),

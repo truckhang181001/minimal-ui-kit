@@ -114,7 +114,8 @@ export default function Router() {
         { path: 'map',
           children: [
             { path: 'visualize', element: <Map /> },
-            { path: 'report', element: <MapReport /> }
+            { path: 'report', element: <MapReport /> },
+            { path: 'roaming', element: <RoamingOrder /> }
           ]
         },
         {
@@ -195,6 +196,7 @@ const ProductFeedbackReport = Loadable(lazy(() => import('../pages/dashboard/pro
 
 const Map = Loadable(lazy(() => import('../pages/dashboard/map/Map')))
 const MapReport = Loadable(lazy(() => import('../pages/dashboard/map/ProductPerDistrictReport')))
+const RoamingOrder = Loadable(lazy(() => import('../pages/dashboard/map/RoamingOrder')))
 
 // APP
 // const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));

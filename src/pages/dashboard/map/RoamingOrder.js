@@ -34,35 +34,16 @@ import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../../components/table';
 // sections
-import { ProductSalesReportTableToolbar, ProductSalesReportTableRow } from '../../../sections/@dashboard/product/sales-report';
+import { RoamingOrderTableToolbar, RoamingOrderTableRow } from '../../../sections/@dashboard/map/roaming';
 import { fDateTime, fInstant } from '../../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = ['all'];
 
-const PLATFORM_OPTIONS = new Map([
-  ['ALL', null],
-  ['GRAB', 'GRAB'],
-  ['SHOPEE', 'SHOPEE'],
-]);
+const MERCHANT_OPTIONS = new Map([[null, null]]);
 
 const STORE_OPTIONS = new Map([['ALL', null]]);
-
-const PROMO_OPTIONS = new Map([
-  ['ALL', null],
-  ['NOT PROMO INCLUDED', false],
-  ['ONLY PROMO INCLUDED', true]
-]);
-
-const EATER_TIER_OPTIONS = new Map([
-  ['ALL', null],
-  ['NEW', 'NEW'],
-  ['WARMLY 1', 'WARMLY_1'],
-  ['WARMLY 2', 'WARMLY_2'],
-  ['WARMLY 3', 'WARMLY_3'],
-  ['CHUNK', 'CHUNK']
-])
 
 const START_DATE = new Date();
 START_DATE.setMonth(START_DATE.getMonth() - 1);
@@ -70,11 +51,8 @@ START_DATE.setMonth(START_DATE.getMonth() - 1);
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', align: 'left' },
   { id: 'totalGrossSales', label: 'Gross Sales', align: 'left' },
-  { id: 'previousTotalGrossSales', label: 'Previous Gross Sales', align: 'left' },
   { id: 'totalNetSales', label: 'Net Sales', align: 'left' },
-  { id: 'previousTotalNetSales', label: 'Previous Net Sales', align: 'left' },
-  { id: 'totalUnitsSold', label: 'Units Sold', align: 'left' },
-  { id: 'previousTotalUnitsSold', label: 'Previous Unit Sold', align: 'left' },
+  { id: 'totalOrder', label: 'Total Order', align: 'left' },
   { id: '' },
 ];
 
@@ -106,13 +84,7 @@ export default function ProductSalesReport() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [filterPlatform, setFilterPlatform] = useState('ALL');
-
-  const [filterStore, setFilterStore] = useState('ALL');
-
-  const [filterEaterTier, setFilterEaterTier] = useState('ALL')
-
-  const [filterPromo, setFilterPromo] = useState('ALL');
+  const [filterMerchant, setFilterMerchant] = useState(null);
 
   const [filterStartDate, setFilterStartDate] = useState(START_DATE);
 
@@ -124,21 +96,8 @@ export default function ProductSalesReport() {
     setFilterName(filterName);
   };
 
-  const handleFilterPlatform = (event) => {
-    setFilterPlatform(event.target.value);
-    setFilterStore('ALL')
-  };
-
-  const handleFilterStore = (event) => {
-    setFilterStore(event.target.value);
-  }
-
-  const handleFilterEaterTier = (event) => {
-    setFilterEaterTier(event.target.value)
-  }
-
-  const handleFilterPromo = (event) => {
-    setFilterPromo(event.target.value);
+  const  handleFilterMerchant = (event) => {
+    setFilterMerchant(event.target.value)
   }
 
   const handleFilterStartDate = (date) => {
@@ -173,16 +132,20 @@ export default function ProductSalesReport() {
     filterName,
   });
 
-  const isNotFound = ((!dataFiltered.length && !!filterName) || (!dataFiltered.length && !!filterPlatform));
+  const isNotFound = ((!dataFiltered.length && !!filterName));
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get('/api/v1/stores/all');
-        response.data.forEach((store) => {
-          STORE_OPTIONS.set(`${store.platform} - ${store.name}`, {id: store.id, platform: store.platform});
+        const response = await axios.get('/api/v1/merchant/all');
+        console.log(response.data)
+        response.data.forEach((merchant) => {
+          MERCHANT_OPTIONS.set(merchant.name, merchant.id);
         });
 
+        const keysIterator = MERCHANT_OPTIONS.keys();
+        keysIterator.next();
+        setFilterMerchant(keysIterator.next().value)
       } catch (error) {
         console.log(error);
       }
@@ -193,11 +156,8 @@ export default function ProductSalesReport() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`/api/v1/order-items/insight?`
-          .concat(`&platform=${PLATFORM_OPTIONS.get(filterPlatform) || ''}`)
-          .concat(`&storeId=${STORE_OPTIONS.get(filterStore) ? STORE_OPTIONS.get(filterStore).id : ''}`)
-          .concat(`&eaterTier=${EATER_TIER_OPTIONS.get(filterEaterTier) ? EATER_TIER_OPTIONS.get(filterEaterTier) : ''}`)
-          .concat(`&isPromoIncluded=${PROMO_OPTIONS.get(filterPromo) === null ? '' : PROMO_OPTIONS.get(filterPromo)}`)
+        console.log(MERCHANT_OPTIONS.get(filterMerchant));
+        const response = await axios.get(`/api/v1/merchants/${MERCHANT_OPTIONS.get(filterMerchant)}/insight/roaming-order?`
           .concat(`&startDate=${fInstant(filterStartDate)}`)
           .concat(`&endDate=${fInstant(filterEndDate, true)}`),
         );
@@ -207,10 +167,10 @@ export default function ProductSalesReport() {
       }
     };
     getData();
-  }, [filterPlatform, filterStore, filterEaterTier, filterPromo, filterStartDate, filterEndDate]);
+  }, [filterStartDate, filterEndDate, filterMerchant]);
 
   return (
-    <Page title="Product: Insight Report">
+    <Page title="Product: Roaming Order">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Product: Insight Report"
@@ -223,7 +183,7 @@ export default function ProductSalesReport() {
         <Card>
           <Tabs
             allowScrollButtonsMobile
-            variant="scrollable"
+            variant="scrollable"f
             scrollButtons="auto"
             value={filterStatus}
             onChange={onChangeFilterStatus}
@@ -236,25 +196,16 @@ export default function ProductSalesReport() {
 
           <Divider />
 
-          <ProductSalesReportTableToolbar
+          <RoamingOrderTableToolbar
             filterName={filterName}
-            filterPlatform={filterPlatform}
             onFilterName={handleFilterName}
-            onFilterPlatform={handleFilterPlatform}
-            optionsPlatform={Array.from(PLATFORM_OPTIONS.keys())}
+            filterMerchant={filterMerchant}
+            onFilterMerchant={handleFilterMerchant}
+            optionsMerchant={Array.from(MERCHANT_OPTIONS.keys())}
             filterStartDate={filterStartDate}
             onFilterStartDate={handleFilterStartDate}
             filterEndDate={filterEndDate}
             onFilterEndDate={handleFilterEndDate}
-            filterStore={filterStore}
-            onFilterStore={handleFilterStore}
-            optionsStore={getStoreOptionsByPlatform(filterPlatform, PLATFORM_OPTIONS, STORE_OPTIONS)}
-            filterEaterTier={filterEaterTier}
-            onFilterEaterTier={handleFilterEaterTier}
-            optionsEaterTier={Array.from(EATER_TIER_OPTIONS.keys())}
-            filterPromo={filterPromo}
-            onFilterPromo={handleFilterPromo}
-            optionsPromo={Array.from(PROMO_OPTIONS.keys())}
           />
 
           <Scrollbar>
@@ -298,7 +249,7 @@ export default function ProductSalesReport() {
 
                 <TableBody>
                   {dataFiltered.slice(0, rowsPerPage).map((row) => (
-                    <ProductSalesReportTableRow
+                    <RoamingOrderTableRow
                       key={row.id}
                       row={row}
                       selected={selected.includes(row.id)}
@@ -356,23 +307,4 @@ function applySortFilter({ tableData, comparator, filterName }) {
   }
 
   return tableData;
-}
-
-function getStoreOptionsByPlatform(platform, platformOptions, storeOptions) {
-
-  const filterPlatform = platformOptions.get(platform)
-
-  if (!filterPlatform) {
-    console.log(Array.from(storeOptions.keys()));
-    return Array.from(storeOptions.keys());
-  }
-
-  const filtered = ['ALL'];
-  storeOptions.forEach((value, key) => {
-    if (value && value.platform === filterPlatform) {
-      filtered.push(key);
-    }
-  })
-
-  return filtered;
 }
