@@ -53,6 +53,7 @@ const TABLE_HEAD = [
   { id: 'totalGrossSales', label: 'Gross Sales', align: 'left' },
   { id: 'totalNetSales', label: 'Net Sales', align: 'left' },
   { id: 'totalOrder', label: 'Total Order', align: 'left' },
+  { id: 'totalEater', label: 'Total Eater', align: 'left' },
   { id: '' },
 ];
 

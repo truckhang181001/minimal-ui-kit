@@ -25,7 +25,7 @@ export default function RoamingOrderTableRow({ row, selected, onEditRow, onSelec
   const theme = useTheme();
 
   const {
-    id, name, totalGrossSales, totalNetSales, totalOrder
+    id, name, totalGrossSales, totalNetSales, totalOrder, totalEater
   } = row;
 
   const [openMenu, setOpenMenuActions] = useState(null);
@@ -65,6 +65,13 @@ export default function RoamingOrderTableRow({ row, selected, onEditRow, onSelec
       <TableCell align="left">
         <Label variant="filled" color="warning">
           {fNumber(totalOrder)}
+        </Label>
+      </TableCell>
+
+
+      <TableCell align="left">
+        <Label variant="filled" color="secondary">
+          {fNumber(totalEater)}
         </Label>
       </TableCell>
 
