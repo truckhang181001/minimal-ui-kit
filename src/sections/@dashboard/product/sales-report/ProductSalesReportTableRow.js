@@ -53,9 +53,6 @@ export default function ProductSalesReportTableRow({ row, selected, onEditRow, o
           <Typography variant="subtitle1" noWrap>
             {name}
           </Typography>
-          <Typography variant="subtitle3" noWrap>
-            {`${storeName.slice(storeName.indexOf('Ulangon'))} - ${platform}`}
-          </Typography>
         </Stack>
       </TableCell>
 
