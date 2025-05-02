@@ -108,23 +108,28 @@ export default function UserList() {
   const { currentTab: filterStatus, onChangeTab: onChangeFilterStatus } = useTabs('all');
 
   const handleFilterName = (filterName) => {
+    setTableData([])
     setFilterName(filterName);
   };
 
   const handleFilterPlatform = (event) => {
+    setTableData([])
     setFilterPlatform(event.target.value);
     setFilterStore('ALL')
   };
 
   const handleFilterStore = (event) => {
+    setTableData([])
     setFilterStore(event.target.value);
   }
 
   const handleFilterStartDate = (date) => {
+    setTableData([])
     setFilterStartDate(date);
   };
 
   const handleFilterEndDate = (date) => {
+    setTableData([])
     setFilterEndDate(date);
   };
 

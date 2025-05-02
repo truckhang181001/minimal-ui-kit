@@ -106,10 +106,12 @@ export default function InvoiceList() {
   };
 
   const handlePressEnter = () => {
+    setInvoice([])
     setPressEnter(!pressEnter);
   };
 
   const handleFilterService = (event) => {
+    setInvoice([])
     let matchFlag = false;
 
     stores.forEach((storeItem) => {
@@ -130,10 +132,12 @@ export default function InvoiceList() {
   };
 
   const handleFilterStartDate = (date) => {
+    setInvoice([])
     setFilterStartDate(date);
   };
 
   const handleFilterEndDate = (date) => {
+    setInvoice([])
     setFilterEndDate(date);
   };
 
