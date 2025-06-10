@@ -78,7 +78,7 @@ export default function InvoiceTableRow({ row, selected, onSelectRow, onViewRow,
 
       <TableCell align="left">{fDateTime(time.createdAt)}</TableCell>
 
-      <TableCell align="left">{address.address}</TableCell>
+      <TableCell align="left">{address ? address.address : '-'}</TableCell>
 
       <TableCell align="center">{fare.totalDisplay} VND</TableCell>
 
