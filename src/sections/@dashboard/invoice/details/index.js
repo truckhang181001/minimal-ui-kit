@@ -78,7 +78,7 @@ export default function InvoiceDetails({ invoice }) {
               {translate('invoiceTo')}
             </Typography>
             <Typography variant="body2">{eater.name}</Typography>
-            <Typography variant="body2">{address.address}</Typography>
+            <Typography variant="body2">{address ? address.address : '-'}</Typography>
             <Typography variant="body2">Phone: {eater.mobileNumber}</Typography>
           </Grid>
 
