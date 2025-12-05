@@ -46,6 +46,7 @@ const PLATFORM_OPTIONS = new Map([
   ['GRAB', 'GRAB'],
   ['SHOPEE', 'SHOPEE'],
   ['BE', 'BE'],
+  ['XANH NGON', 'XANH_NGON'],
 ]);
 
 const STORE_OPTIONS = new Map([['ALL', null]]);
