@@ -38,6 +38,7 @@ export default function LoginForm() {
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
+    defaultValues,
   });
 
   const {
