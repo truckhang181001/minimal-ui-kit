@@ -31,8 +31,8 @@ export default function LoginForm() {
   });
 
   const defaultValues = {
-    email: 'khangnt@viettelidc.com.vn',
-    password: 'Vtdc@123',
+    email: '',
+    password: '',
     remember: true,
   };
 
