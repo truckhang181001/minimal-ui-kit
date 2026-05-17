@@ -10,12 +10,3 @@
   height: 100%;
 }
 
-.circle-marker {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  background: rgba(255,0,0,0.2);
-  border-radius: 50%;
-  border: 1px solid red;
-  /* opacity: 0.5 !important; */
-}

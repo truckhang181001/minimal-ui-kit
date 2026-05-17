@@ -1,20 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
-import {
-  Box,
-  Card,
-  Table,
-  Stack,
-  Switch,
-  Tooltip,
-  Divider,
-  TableBody,
-  Container,
-  IconButton,
-  TableContainer,
-  TablePagination,
-  FormControlLabel,
-} from '@mui/material';
+import { Box, CircularProgress, Container } from '@mui/material';
 
 import axios from '../../../utils/axios';
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -27,6 +13,8 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 
+const SOURCE_ID = 'addresses';
+
 function Map() {
 
   const { translate } = useLocales();
@@ -34,6 +22,7 @@ function Map() {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const [loading, setLoading] = useState(true);
   const [lng] = useState(106.7);
   const [lat] = useState(10.78);
   const [zoom] = useState(11.5);
@@ -44,7 +33,7 @@ function Map() {
   const region = 'ap-southeast-1';
 
   useEffect(() => {
-    if (map.current) return; // stops map from intializing more than once
+    if (map.current) return; // stops map from initializing more than once
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
@@ -52,25 +41,76 @@ function Map() {
       center: [lng, lat],
       zoom,
     });
-  }, [lng, lat, zoom]);
 
-  useEffect(() => {
-    const getData = async () => {
+    // Fetch data only after the map style is fully loaded — avoids addSource/addLayer race conditions
+    map.current.once('load', async () => {
       try {
         const response = await axios.get(`/api/v1/stores/orders/addresses/all`);
-        response.data.forEach((address) => {
-          const el = document.createElement('div');
-          el.className = 'circle-marker';
-          new maplibregl.Marker({ element: el })
-            .setLngLat([address.geometry[0], address.geometry[1]])
-            .addTo(map.current);
+        setLoading(false);
+
+        const geojson = {
+          type: 'FeatureCollection',
+          features: response.data.map((address) => ({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [address.geometry[0], address.geometry[1]],
+            },
+          })),
+        };
+
+        map.current.addSource(SOURCE_ID, {
+          type: 'geojson',
+          data: geojson,
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 50,
+        });
+
+        // Cluster bubble
+        map.current.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: SOURCE_ID,
+          filter: ['has', 'point_count'],
+          paint: {
+            'circle-color': [
+              'step', ['get', 'point_count'],
+              '#ff5050', 100,
+              '#ff2828', 500,
+              '#c80000',
+            ],
+            'circle-radius': [
+              'step', ['get', 'point_count'],
+              20, 100,
+              30, 500,
+              40,
+            ],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ff0000',
+            'circle-opacity': 0.7,
+          },
+        });
+
+        // Individual (unclustered) point
+        map.current.addLayer({
+          id: 'unclustered-point',
+          type: 'circle',
+          source: SOURCE_ID,
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-radius': 7,
+            'circle-color': '#ff000033',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ff0000',
+          },
         });
       } catch (error) {
-        console.log(error);
+        console.error('Failed to load address data:', error);
+        setLoading(false);
       }
-    };
-    getData();
-  }, []);
+    });
+  }, [lng, lat, zoom]);
 
   return (
     <Page title="Map">
@@ -84,6 +124,21 @@ function Map() {
         />
         <div className="map-wrap">
           <div ref={mapContainer} className="map" />
+          {loading && (
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: 'rgba(255,255,255,0.55)',
+                zIndex: 10,
+              }}
+            >
+              <CircularProgress color="error" />
+            </Box>
+          )}
         </div>
       </Container>
     </Page>
