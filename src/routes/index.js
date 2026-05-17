@@ -124,6 +124,12 @@ export default function Router() {
             {path: 'sales-report', element: <ProductSalesReport />},
             {path: 'feedback-report', element: <ProductFeedbackReport />}
           ]
+        },
+        {
+          path: 'shopee',
+          children: [
+            { path: 'import', element: <ShopeeOrderImport /> },
+          ]
         }
       ],
     },
@@ -197,6 +203,8 @@ const ProductFeedbackReport = Loadable(lazy(() => import('../pages/dashboard/pro
 const Map = Loadable(lazy(() => import('../pages/dashboard/map/Map')))
 const MapReport = Loadable(lazy(() => import('../pages/dashboard/map/ProductPerDistrictReport')))
 const RoamingOrder = Loadable(lazy(() => import('../pages/dashboard/map/RoamingOrder')))
+
+const ShopeeOrderImport = Loadable(lazy(() => import('../pages/dashboard/shopee/ShopeeOrderImport')))
 
 // APP
 // const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));

@@ -96,6 +96,9 @@ export const PATH_DASHBOARD = {
   product: {
     root: path(ROOTS_DASHBOARD, '/product/sales-report'),
     feedback: path(ROOTS_DASHBOARD, '/product/feedback-report'),
+  },
+  shopee: {
+    root: path(ROOTS_DASHBOARD, '/shopee/import'),
   }
 };
 
