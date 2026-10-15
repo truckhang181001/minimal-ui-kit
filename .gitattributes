@@ -1,0 +1,9 @@
+# Same line endings on every machine (Mac, Linux, Windows). Without this, Git on
+# Windows checks files out with CRLF and shell scripts, mvnw and Docker builds
+# fail with "$'\r': command not found".
+* text=auto eol=lf
+
+# Windows-only scripts keep CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
