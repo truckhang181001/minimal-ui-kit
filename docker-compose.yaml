@@ -1,9 +1,9 @@
-version: '3.8'
 services:
   ulangon:
     build: ./
     container_name: ulangon-application
+    restart: unless-stopped
     ports:
-      - "3030:3030"
-    stdin_open: true
-    tty: true
+      # nginx inside the container serves the static build on 80. Once the ALB
+      # is gone, change to "127.0.0.1:3030:80" so only the edge nginx reaches it.
+      - "3030:80"
